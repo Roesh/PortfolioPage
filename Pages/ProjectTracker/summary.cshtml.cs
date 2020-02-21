@@ -10,9 +10,9 @@ namespace PortfolioPage.ProjectTracker.Pages
 {
     public class summaryModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
+        private readonly ILogger<summaryModel> _logger;
 
-        public summaryModel(ILogger<IndexModel> logger)
+        public summaryModel(ILogger<summaryModel> logger)
         {
             _logger = logger;
         }

@@ -1,0 +1,7 @@
+/.vscode
+/bin
+/obj
+/Data/Migrations
+/app.db
+appsettings.Development.json
+/wwwroot/lib

@@ -17,6 +17,8 @@ using System.Runtime.InteropServices;
 using System.IO;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using WebPWrecover.Services;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PortfolioPage
 {    
@@ -45,6 +47,14 @@ namespace PortfolioPage
             services.AddDbContext<PortfolioPageContext>(options =>
                 options.UseSqlite(
                     Configuration.GetConnectionString("ProjectContext")));
+
+            services.AddControllers(config =>
+            {                
+                var policy = new AuthorizationPolicyBuilder()
+                                .RequireAuthenticatedUser()
+                                .Build();
+                config.Filters.Add(new AuthorizeFilter(policy));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

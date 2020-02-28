@@ -5,62 +5,93 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<style>
+    .grad-bg-1 {
+        background-image: linear-gradient(5deg, #8400ac 0%, #007580 100%);
+        border-color: grey;
+        border-width: 3px;
+        color: white;
+    }
 
-<h4>project</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="project.title" class="control-label"></label>
-                <input asp-for="project.title" class="form-control" />
-                <span asp-validation-for="project.title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="project.description" class="control-label"></label>
-                <input asp-for="project.description" class="form-control" />
-                <span asp-validation-for="project.description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="project.creationDate" class="control-label"></label>
-                <input asp-for="project.creationDate" class="form-control" />
-                <span asp-validation-for="project.creationDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="project.completionDate" class="control-label"></label>
-                <input asp-for="project.completionDate" class="form-control" />
-                <span asp-validation-for="project.completionDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="project.completionDeadline" class="control-label"></label>
-                <input asp-for="project.completionDeadline" class="form-control" />
-                <span asp-validation-for="project.completionDeadline" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="project.currentProjectStatus" class="control-label"></label>
-                <select asp-for="project.currentProjectStatus" class="form-control"></select>
-                <span asp-validation-for="project.currentProjectStatus" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="project.currentProjectPhase" class="control-label"></label>
-                <select asp-for="project.currentProjectPhase" class="form-control"></select>
-                <span asp-validation-for="project.currentProjectPhase" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="project.isPublic" /> @Html.DisplayNameFor(model => model.project.isPublic)
-                </label>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+    .grad-bg-2 {
+        background-image: linear-gradient(355deg, #8400ac 0%, #007580 100%);
+        border-color: grey;
+        color: white;
+    }
+
+    .bg-grey {
+        background-color: grey;
+        border-color: #8400ac;
+    }
+
+    .prj-title {
+        color: grey;
+    }
+</style>
+
+<!-- TODO: Implement this correctly: https://stackoverflow.com/questions/6578495/how-do-i-display-the-displayattribute-description-attribute-value -->
+<div class="container-lg">
+    <div class="row">
+        <div class="col-md-6">
+            <form method="post">                
+                <div asp-validation-summary="ModelOnly" class="text-danger">
+                </div>
+                <div class="row">
+                    <div class="col-12 form-group">
+                        <label asp-for="project.title" class="control-label"></label>
+                        <input asp-for="project.title" class="form-control" />
+                        <span asp-validation-for="project.title" class="text-danger"></span>
+                    </div>
+                    <div class="col-auto form-group">
+                        <label asp-for="project.startDate" class="control-label"></label>
+                        <input asp-for="project.startDate" class="form-control" />
+                        <span asp-description-for="project.startDate" class="form-text text-muted"></span>
+                        <span asp-validation-for="project.startDate" class="text-danger"></span>
+                    </div>
+                    <div class="col-auto form-group">
+                        <label asp-for="project.completionDeadline" class="control-label"></label>
+                        <input asp-for="project.completionDeadline" class="form-control" />
+                        <span asp-validation-for="project.completionDeadline" class="text-danger"></span>
+                    </div>      
+                </div>
+                <div class="row">
+                    <div class="col mh-40">
+                        <div class="form-group">
+                            <label asp-for="project.description" class="control-label"></label>
+                            <textarea asp-for="project.description" class="form-control d-flex" rows="8"></textarea>
+                            <span asp-validation-for="project.description" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>                  
+                <div class="row">                    
+                    <div class="col-auto form-group">
+                        <label asp-for="project.currentProjectStatus" class="control-label"></label>
+                        <select asp-for="project.currentProjectStatus" class="form-control"
+                            asp-items="Html.GetEnumSelectList<PortfolioPage.Models.project.projectStatus>()"></select>
+                        <span asp-validation-for="project.currentProjectStatus" class="text-danger"></span>
+                    </div>
+                    <div class="col-auto form-group">
+                        <label asp-for="project.currentProjectPhase" class="control-label"></label>
+                        <select asp-for="project.currentProjectPhase" class="form-control" 
+                            asp-items="Html.GetEnumSelectList<PortfolioPage.Models.project.projectPhase>()"></select>
+                        <span asp-validation-for="project.currentProjectPhase" class="text-danger"></span>
+                    </div>  
+                </div>  
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="project.isPublic" /> @Html.DisplayNameFor(model => model.project.isPublic)
+                        <span class="text-muted">Learn more about this setting here</span>
+                    </label>                        
+                </div> 
+                <div class="form-group mt-3">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
 <div>
-    <a asp-page="Index">Back to List</a>
+    <a asp-page="../MyProjects">Back to Dashboard</a>
 </div>
 

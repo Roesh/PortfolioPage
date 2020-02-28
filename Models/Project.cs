@@ -8,13 +8,15 @@ namespace PortfolioPage.Models
 {    
     public static class magicNumbers{
         public const int maxProjectTitleLength = 150;
-        public const String errorMessage_maxProjectTitleLength = "Title cannot be longer than 150 characters.";
+        public const int minProjectTitleLength = 3;
+        public const String errorMessage_maxProjectTitleLength = "Title must be between 3 than 150 characters";
 
         public const int maxDescriptionLength = 5000;
         public const String errorMessage_maxDescriptionLength = "Description is too long";
 
     }
 
+    // TODO: Add creation date separately
     public class project
     {
         public enum projectStatus{
@@ -40,42 +42,52 @@ namespace PortfolioPage.Models
 
         // user ID from AspNetUser table.
         public string creatingUserID {get; set;}
-
-        [StringLength(magicNumbers.maxProjectTitleLength,  ErrorMessage = magicNumbers.errorMessage_maxProjectTitleLength)]
+        
+        // TODO: Make sure project title is required, at least 3 characters. It doesn't seem to be working now
+        [DisplayName("Project Title")] 
+        [StringLength(magicNumbers.maxProjectTitleLength, MinimumLength = magicNumbers.minProjectTitleLength,  ErrorMessage = magicNumbers.errorMessage_maxProjectTitleLength)]
         public string title { get; set; }
+
+        [DisplayName("Project Description")] 
         public string description { get; set; }
 
-        [Description("The date this project was created")]     
-        [DisplayName("Creation deadline")] 
+        [Description("The date that work will begin on this project")]     
+        [DisplayName("Project Start Date")] 
+        [DataType(DataType.Date)]
+        public DateTime startDate { get; set; }
+
+        [Description("The date this project was created by the user")]     
+        [DisplayName("Project Creation Date")] 
         [DataType(DataType.Date)]
         public DateTime creationDate { get; set; }
 
         [Description("The date this project was completed")]     
-        [DisplayName("Completion date")] 
+        [DisplayName("Completion Date")] 
         [DataType(DataType.Date)]        
         public DateTime? completionDate { get; set; }
 
         [Description("The date this project is due")]     
-        [DisplayName("Completion deadline")]     
+        [DisplayName("Completion Deadline")]     
         [DataType(DataType.Date)]
         public DateTime completionDeadline { get; set; }
         public ICollection<projectCompletionDeadlineHistory> projectDeadlineHx {get; set;}
         
+        [Description("All the components and their children that are a part of this project")]
+        [DisplayName("Project Components")]
         public ICollection<projectComponent> components {get; set;}
 
-        [DisplayName("Project Status")]        
+        [DisplayName("Project Status")]
         [Description("The current status of this project")]
         [EnumDataType(typeof(projectStatus))]
         public projectStatus currentProjectStatus{get; set;}
-        
-        
+                
         [DisplayName("Project Phase")]
         [Description("The current phase that this project is in")]
         [EnumDataType(typeof(projectPhase))]        
         public projectPhase currentProjectPhase{get; set;}
         
         [Description("Controls whether this project can be viewed by the public")]
-        [DisplayName("Is public?")]
+        [DisplayName("Can the general public see this project's details?")]
         public bool isPublic{get; set;}
     }
     public class projectPhaseHistory : eventHistory

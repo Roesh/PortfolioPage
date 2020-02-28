@@ -45,10 +45,6 @@ namespace PortfolioPage
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite(
-                    Configuration.GetConnectionString("ProjectContext")));
-
             services.AddControllers(config =>
             {                
                 var policy = new AuthorizationPolicyBuilder()

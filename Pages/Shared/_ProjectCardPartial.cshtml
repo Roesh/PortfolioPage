@@ -1,0 +1,102 @@
+@model PortfolioPage.Pages.ProjectTracker.DI_BasePageModel
+
+@foreach (var item in Model.projectList)
+{
+    <!-- master project card row -->
+    <!-- TODO: Implement some way to filter the projects list, perhaps using some personal preferences-->
+    <div class="row card shadow-md mx-3 my-3" style="color: black">
+        <div class="col">
+            <!-- Row 1 -->
+            <div class="row">
+
+                <!-- row 1: left column Project title + Deadline info master row-->
+                <div class="col mt-3">                                         
+                    <div class="row">
+                        <div class="col h3">
+                            @Html.DisplayFor(modelItem => item.title)
+                        </div>
+                    </div>
+                    <!-- Deadline information -->
+                    <div class="row text-muted">                                    
+                        @if(item.completionDate != null){                                
+                        <div class="col">
+                            <i>This project was completed on @Html.DisplayFor(model => item.completionDate)</i>
+                        </div>
+                        }
+                        else
+                        {
+                        <div class="col">
+                            <i>
+                                @Html.DisplayNameFor(model => model.projectList[0].completionDeadline):&nbsp;
+                                @Html.DisplayFor(model => item.completionDeadline)
+                            </i>
+                        </div>
+                        }    
+                        <!-- Add spacing on small screens https://getbootstrap.com/docs/4.4/utilities/display/ -->
+                        <div class="col-md d-block d-md-none mb-4 w-auto"></div>                             
+                    </div>  
+                    <!-- Visibility information -->
+                    <div class="row">
+                        <div class="col">
+                            @if(item.isPublic){
+                                <p>This project is visible to the public</p>
+                            }else{
+                                <p>This project is not visible to the public</p>
+                            }
+                        </div>
+                    </div>                                     
+                </div>                                
+
+                <!-- row 1, right column: Status, Phase details -->
+                <div class="col-auto align-self-center ml-auto shadow-sm">
+
+                    <div class="row mb-1 no-gutters">                            
+                        <!-- Phase information -->
+                        <div class="col-auto" style="color: grey">
+                            @Html.DisplayNameFor(model =>
+                            model.projectList[0].currentProjectPhase):&nbsp;
+                        </div>
+                        <div class="col-auto">
+                            @Html.DisplayFor(modelItem => item.currentProjectPhase)
+                        </div>
+                    </div>                                
+                    <div class="row mb-1 no-gutters">
+                        <!-- Status information -->
+                        <div class="col-auto text-muted">                                        
+                                @Html.DisplayNameFor(model =>
+                                model.projectList[0].currentProjectStatus):&nbsp;
+                        </div>
+                        @if(item.currentProjectStatus == project.projectStatus.onTrack)
+                        {
+                        <div class="col-auto btn-success align-self-center px-1">                                        
+                            <i>@Html.DisplayFor(modelItem => item.currentProjectStatus)</i>
+                        </div>
+                        }
+                        @if(item.currentProjectStatus == project.projectStatus.behind)
+                        {
+                        <div class="col-auto btn-warning align-self-center px-1">
+                            <i>@Html.DisplayFor(modelItem => item.currentProjectStatus)</i>
+                        </div>
+                        }
+                        @if(item.currentProjectStatus == project.projectStatus.complete)
+                        {
+                        <div class="col-auto btn-info align-self-center px-1">
+                            <i>@Html.DisplayFor(modelItem => item.currentProjectStatus)</i>
+                        </div>
+                        }
+                    </div>
+                </div>                    
+            </div>
+            <!-- End row 1 -->
+            <hr>
+
+            <!-- Row 2 -->
+            <div class="row mb-2" style="color: grey;">
+                <div class="col overflow-auto" rows="3">
+                    @Html.DisplayFor(model => item.description)
+                </div>
+            </div>
+            <!-- End Row 2 -->
+    </div>
+    </div>
+}

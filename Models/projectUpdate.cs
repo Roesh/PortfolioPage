@@ -31,7 +31,7 @@ namespace PortfolioPage.Models
         public DateTime lastEditDate { get; set; }        
     }
     
-    //TODO: Optimize this:
+
     public class projectUpdateEditHistory : eventHistory{
         public int projectUpdateID;
             

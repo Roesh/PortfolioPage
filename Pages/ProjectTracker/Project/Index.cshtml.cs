@@ -21,7 +21,6 @@ namespace PortfolioPage.Pages.ProjectTracker.Project
         {
         }
 
-        public IList<project> projectList { get; set; }
         public string currentUserId;     
         public bool RequestedUserFound = true;  
         public string requestedUserName = "";  
@@ -41,7 +40,7 @@ namespace PortfolioPage.Pages.ProjectTracker.Project
                 var projects = from c in Context.project
                             where c.creatingUserID == requestedUserId 
                             && c.isPublic
-                            select c;   
+                            select c;
                 
                 projectList = await projects.ToListAsync();
             }

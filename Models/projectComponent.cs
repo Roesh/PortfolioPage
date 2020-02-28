@@ -17,7 +17,7 @@ namespace PortfolioPage.Models
         public string description { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime creationDate { get; set; }
+        public DateTime startDate { get; set; }
         [DataType(DataType.Date)]
         public DateTime? completionDate { get; set; }
         [DataType(DataType.Date)]

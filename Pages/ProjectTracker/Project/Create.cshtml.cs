@@ -45,7 +45,7 @@ namespace PortfolioPage.Pages.ProjectTracker.Project
             Context.project.Add(project);
             await Context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("../MyProjects");
         }
     }
 }

@@ -1,7 +1,9 @@
 using PortfolioPage.Data;
+using PortfolioPage.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace PortfolioPage.Pages.ProjectTracker
@@ -12,6 +14,8 @@ namespace PortfolioPage.Pages.ProjectTracker
         protected IAuthorizationService AuthorizationService { get; }
         protected UserManager<IdentityUser> UserManager { get; }
 
+        public IList<project> projectList { get; set; }
+
         public DI_BasePageModel(
             ApplicationDbContext context,
             IAuthorizationService authorizationService,
@@ -20,7 +24,7 @@ namespace PortfolioPage.Pages.ProjectTracker
             Context = context;
             UserManager = userManager;
             AuthorizationService = authorizationService;
-        } 
+        }
 
         /*TODO: Write unit tests to test out individual methods. Investigate various methods of unit testing */
         public bool userIdExists(string userID){
@@ -31,25 +35,20 @@ namespace PortfolioPage.Pages.ProjectTracker
             return true;            
         }
 
-        // Returns empty string if user Id does not exist
+        // Returns default string if user Id does not exist
         public string getUserNameFromUserID(string userID){
-            string userName = string.Empty;
-            /* using the Single() method to convert to single variable - throwing an exception here is OK because
-            userID is a primary key and should NOT have duplicate rows */
-            userName = (from u in UserManager.Users where u.Id == userID select u.UserName).Single();
-            return userName;
+            // using the Single() method to convert to single variable - throwing an exception here if there is a list should occur because userID is a primary key 
+            // and should NOT have duplicate rows
+            return (from u in UserManager.Users where u.Id == userID select u.UserName).Single();             
         }
 
-        // Returns empty string if user name does not exist
-        public string getUserIdFromUserName(string userName){
-            string userId = string.Empty;
-            
+        // Returns default string if user name does not exist https://docs.microsoft.com/en-us/dotnet/api/system.linq.enumerable.firstordefault?view=netframework-4.8
+        public string getUserIdFromUserName(string userName){            
             // TODO: Make sure Identity is enforcing unique userNames. Using First() method to 
-            // convert from list to sinvlesingle value.
-            userId = (from u in UserManager.Users
-                                where u.UserName == userName
-                                select u.Id).First();             
-            return userId;
+            // convert from list to value.
+            return (from u in UserManager.Users
+                    where u.UserName == userName
+                    select u.Id).FirstOrDefault();
         }
     }
 }

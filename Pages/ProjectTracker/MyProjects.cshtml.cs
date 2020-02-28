@@ -29,13 +29,13 @@ namespace PortfolioPage.Pages.ProjectTracker
         {
         }
 
-        public IList<project> projectList { get; set; }
+        
         public string userName;
 
         public async Task OnGetAsync()
         {
             string currentUserId = UserManager.GetUserId(User);
-            userName = getUserNameFromUserID(currentUserId);
+            userName = User.Identity.Name;
             
             var projects = from c in Context.project
                         where c.creatingUserID == currentUserId

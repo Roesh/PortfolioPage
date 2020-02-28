@@ -11,14 +11,14 @@ if($m -eq "h"){
 }
 
 function dbCommandsPortfolio{
-    dotnet ef migrations add InitialCreate --context PortfolioPageContext
-    dotnet ef database update --context PortfolioPageContext 
+    dotnet ef migrations add InitialCreate --context ApplicationDbContext
+    dotnet ef database update --context ApplicationDbContext 
 }
 
 function razorCommandsPortfolio{
-    dotnet aspnet-codegenerator razorpage -m project -dc PortfolioPageContext -udl -outDir Pages\ProjectTracker
-    dotnet aspnet-codegenerator razorpage -m projectComponent -dc PortfolioPageContext -udl -outDir Pages\ProjectTracker\Component
-    dotnet aspnet-codegenerator razorpage -m projectUpdate -dc PortfolioPageContext -udl -outDir Pages\ProjectTracker\Update
+    dotnet aspnet-codegenerator razorpage -m project -dc ApplicationDbContext -udl -outDir Pages\ProjectTracker
+    dotnet aspnet-codegenerator razorpage -m projectComponent -dc ApplicationDbContext -udl -outDir Pages\ProjectTracker\Component
+    dotnet aspnet-codegenerator razorpage -m projectUpdate -dc ApplicationDbContext -udl -outDir Pages\ProjectTracker\Update
 }
 
 if($m -eq "all"){

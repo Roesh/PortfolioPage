@@ -1,0 +1,173 @@
+@page
+@model PortfolioPage.Pages.ProjectTracker.Project.IndexModel
+
+@{
+ViewData["Title"] = "Index";
+}
+<style>
+    .grad-bg-1 {
+        background-image: linear-gradient(5deg, #8400ac 0%, #007580 100%);
+        border-color: grey;
+        border-width: 3px;
+        color: white;
+    }
+
+    .grad-bg-2 {
+        background-image: linear-gradient(355deg, #8400ac 0%, #007580 100%);
+        border-color: grey;
+        color: white;
+    }
+
+    .bg-grey {
+        background-color: grey;
+        border-color: #8400ac;
+    }
+
+    .prj-title {
+        color: grey;
+    }
+</style>
+
+<div class="container-lg">
+
+    <div class="row">
+        <div class="col card grad-bg-1">
+            <div class="row">
+                <div class="display-3 mb-4 px-3">Project Dashboard</div>
+            </div>
+            <div class="row h4 mb-4 px-3">
+                <p>Viewing <b>@Model.requestedUserName's</b> public projects</p>
+            </div>
+        </div>
+    </div>
+    <hr>
+
+    <!-- Help user get started if there are no projects -->
+    <!-- https://stackoverflow.com/questions/24390005/checking-for-empty-or-null-liststring -->
+    <!-- https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/null-coalescing-operator -->
+    @if(!Model.RequestedUserFound){
+        <div class="row">
+            <div class="col">
+                <div class="display-4">User @Model.requestedUserName was not found</div>                                                 
+            </div>
+        </div>
+        return;
+    }
+    @if((!Model.projectList?.Any() ?? false)) {
+    <div class="row">
+        <div class="col">
+            <div class="display-4">User @Model.requestedUserName has no publicly viewable projects</div>                                                 
+        </div>
+    </div>        
+    return;
+    }       
+
+    <!--Template is:            
+    -- Project name on row 1, left aligned
+    -- Deadlines on row 1, left aligned. Status of project on row 2, right aligned-->
+    <div class="row">
+        <div class="col card grad-bg-2">
+            @foreach (var item in Model.projectList)
+            {
+                <!-- master project card row -->
+                <div class="row card shadow-md mx-3 my-3" style="color: black">
+                    <div class="col">
+                        <!-- Row 1 -->
+                        <div class="row">
+
+                            <!-- row 1: left column Project title + Deadline info master row-->
+                            <div class="col mt-3">                                  
+                                <div class="row">
+                                    <div class="col h3">
+                                        @Html.DisplayFor(modelItem => item.title)
+                                    </div>
+                                </div>
+                                <!-- Deadline information -->
+                                <div class="row">                                    
+                                    @if(item.completionDate != null){                                
+                                    <div class="col" style="color: grey">
+                                        <i>This project was completed on @Html.DisplayFor(model => item.completionDate)</i>
+                                    </div>
+                                    }
+                                    else
+                                    {
+                                    <div class="col" style="color: grey">
+                                        <i>
+                                            @Html.DisplayNameFor(model => model.projectList[0].completionDeadline):&nbsp;
+                                            @Html.DisplayFor(model => item.completionDeadline)
+                                        </i>
+                                    </div>
+                                    }    
+                                    <!-- Add spacing on small screens https://getbootstrap.com/docs/4.4/utilities/display/ -->
+                                    <div class="col-md d-block d-md-none mb-4 w-auto"></div>                             
+                                </div>    
+                                <!-- Visibility information -->
+                                <div class="row">
+                                    <div class="col">
+                                        @if(item.isPublic){
+                                            <p>This project is visible to the public</p>
+                                        }else{
+                                            <p>This project is not visible to the public</p>
+                                        }
+                                    </div>
+                                </div>                                     
+                            </div>                                
+
+                            <!-- row 1, right column: Status, Phase details -->
+                            <div class="col-auto align-self-center ml-auto shadow-sm">
+
+                                <div class="row mb-1 no-gutters">                            
+                                    <!-- Phase information -->
+                                    <div class="col-auto" style="color: grey">
+                                        @Html.DisplayNameFor(model =>
+                                        model.projectList[0].currentProjectPhase):&nbsp;
+                                    </div>
+                                    <div class="col-auto">
+                                        @Html.DisplayFor(modelItem => item.currentProjectPhase)
+                                    </div>
+                                </div>                                
+                                <div class="row mb-1 no-gutters">
+                                    <!-- Status information -->
+                                    <div class="col-auto" style="color: grey">                                        
+                                            @Html.DisplayNameFor(model =>
+                                            model.projectList[0].currentProjectStatus):&nbsp;
+                                    </div>
+                                    @if(item.currentProjectStatus == project.projectStatus.onTrack)
+                                    {
+                                    <div class="col-auto btn-success align-self-center px-1">                                        
+                                        <i>@Html.DisplayFor(modelItem => item.currentProjectStatus)</i>
+                                    </div>
+                                    }
+                                    @if(item.currentProjectStatus == project.projectStatus.behind)
+                                    {
+                                    <div class="col-auto btn-warning align-self-center px-1">
+                                        <i>@Html.DisplayFor(modelItem => item.currentProjectStatus)</i>
+                                    </div>
+                                    }
+                                    @if(item.currentProjectStatus == project.projectStatus.complete)
+                                    {
+                                    <div class="col-auto btn-info align-self-center px-1">
+                                        <i>@Html.DisplayFor(modelItem => item.currentProjectStatus)</i>
+                                    </div>
+                                    }
+                                </div>
+                            </div>                    
+                        </div>
+                        <!-- End row 1 -->
+                        <hr>
+
+                        <!-- Row 2 -->
+                        <div class="row mb-2" style="color: grey;">
+                            <div class="col overflow-auto">
+                                @Html.DisplayFor(model => item.description):
+                            </div>
+                        </div>
+                        <!-- End Row 2 -->
+                </div>
+            </div>
+            }
+
+        </div>        
+    </div>
+
+</div>

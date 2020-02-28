@@ -15,9 +15,9 @@ namespace PortfolioPage.Pages.ProjectTracker.Project
     [Authorize]
     public class DeleteModel : PageModel
     {
-        private readonly PortfolioPage.Data.PortfolioPageContext _context;
+        private readonly PortfolioPage.Data.ApplicationDbContext _context;
 
-        public DeleteModel(PortfolioPage.Data.PortfolioPageContext context)
+        public DeleteModel(PortfolioPage.Data.ApplicationDbContext context)
         {
             _context = context;
         }

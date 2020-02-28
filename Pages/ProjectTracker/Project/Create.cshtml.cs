@@ -9,17 +9,18 @@ using PortfolioPage.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using PortfolioPage.Models;
+using PortfolioPage.Authorization;
 
 namespace PortfolioPage.Pages.ProjectTracker.Project
 {
-    [Authorize]
-    public class CreateModel : PageModel
+    public class CreateModel : DI_BasePageModel
     {
-        private readonly PortfolioPage.Data.PortfolioPageContext _context;
-
-        public CreateModel(PortfolioPage.Data.PortfolioPageContext context)
+        public CreateModel(
+            ApplicationDbContext context,
+            IAuthorizationService authorizationService,
+            UserManager<IdentityUser> userManager)
+            : base(context, authorizationService, userManager)
         {
-            _context = context;
         }
 
         public IActionResult OnGet()
@@ -39,8 +40,10 @@ namespace PortfolioPage.Pages.ProjectTracker.Project
                 return Page();
             }
 
-            _context.project.Add(project);
-            await _context.SaveChangesAsync();
+            project.creatingUserID = UserManager.GetUserId(User);
+
+            Context.project.Add(project);
+            await Context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
         }

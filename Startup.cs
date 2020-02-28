@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using WebPWrecover.Services;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Authorization;
+using PortfolioPage.Authorization;
 
 namespace PortfolioPage
 {    
@@ -44,7 +45,7 @@ namespace PortfolioPage
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddDbContext<PortfolioPageContext>(options =>
+            services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(
                     Configuration.GetConnectionString("ProjectContext")));
 
@@ -55,6 +56,15 @@ namespace PortfolioPage
                                 .Build();
                 config.Filters.Add(new AuthorizeFilter(policy));
             });
+            // Authorization handlers.
+            services.AddScoped<IAuthorizationHandler,
+                                  projectIsOwnerAuthorizationHandler>();
+
+            services.AddSingleton<IAuthorizationHandler,
+                                  projectAdministratorsAuthorizationHandler>();
+
+            services.AddSingleton<IAuthorizationHandler,
+                                  projectManagerAuthorizationHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

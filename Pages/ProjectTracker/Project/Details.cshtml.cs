@@ -9,10 +9,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using PortfolioPage.Data;
 using PortfolioPage.Models;
+using PortfolioPage.Authorization;
 
 namespace PortfolioPage.Pages.ProjectTracker.Project
 {
-    [AllowAnonymous]
     public class DetailsModel : DI_BasePageModel
     {
         public DetailsModel(
@@ -27,9 +27,9 @@ namespace PortfolioPage.Pages.ProjectTracker.Project
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            Project = await Context.project.FirstOrDefaultAsync(m => m.ContactId == id);
+            Project = await Context.project.FirstOrDefaultAsync(m => m.ID == id);
 
-            if (Contact == null)
+            if (Project == null)
             {
                 return NotFound();
             }
@@ -39,14 +39,12 @@ namespace PortfolioPage.Pages.ProjectTracker.Project
                 return Challenge();
             }
 
-            var isAuthorized = User.IsInRole(Constants.ContactManagersRole) ||
-                               User.IsInRole(Constants.ContactAdministratorsRole);
+            var isPublic = Project.isPublic;
 
             var currentUserId = UserManager.GetUserId(User);
 
-            if (!isAuthorized
-                && currentUserId != Contact.OwnerID
-                && Contact.Status != ContactStatus.Approved)
+            if (!isPublic
+                && currentUserId != Project.creatingUserID)
             {
                 return Forbid();
             }

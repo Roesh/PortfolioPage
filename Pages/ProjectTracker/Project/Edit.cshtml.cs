@@ -16,9 +16,9 @@ namespace PortfolioPage.Pages.ProjectTracker.Project
     [Authorize]
     public class EditModel : PageModel
     {
-        private readonly PortfolioPage.Data.PortfolioPageContext _context;
+        private readonly PortfolioPage.Data.ApplicationDbContext _context;
 
-        public EditModel(PortfolioPage.Data.PortfolioPageContext context)
+        public EditModel(PortfolioPage.Data.ApplicationDbContext context)
         {
             _context = context;
         }

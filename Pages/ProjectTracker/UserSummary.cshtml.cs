@@ -12,9 +12,9 @@ namespace PortfolioPage.ProjectTracker.Pages
 {
     public class summaryModel : PageModel
     {
-        private readonly PortfolioPage.Data.PortfolioPageContext _context;
+        private readonly PortfolioPage.Data.ApplicationDbContext _context;
 
-        public summaryModel(PortfolioPage.Data.PortfolioPageContext context)
+        public summaryModel(PortfolioPage.Data.ApplicationDbContext context)
         {
             _context = context;
         }

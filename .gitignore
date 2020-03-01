@@ -2,8 +2,14 @@
 /bin
 /obj
 /Data/Migrations
-/app.db
+app.db
+app.db-shm
+app.db-wal
+app.db.sql
 appsettings.Development.json
 Project.db
 /Migrations
 packages-microsoft-prod.deb
+ProjectDbSQLScript
+Services/AuthMessageSender.cs
+Services/mailKit.cs

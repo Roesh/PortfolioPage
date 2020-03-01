@@ -1,5 +1,7 @@
 public class AuthMessageSenderOptions
 {
-    public string SendGridUser { get; set; }
-    public string SendGridKey { get; set; }
+    public string SendingUserName { get; set; }
+    public string SendingUserEmail { get; set; }
+    public string SendingUserPassword { get; set; }
+    public string SMTPdomain { get; set; }
 }

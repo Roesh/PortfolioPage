@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
-using SendGrid;
-using SendGrid.Helpers.Mail;
+using MailKit.Net.Smtp;
+using MailKit;
+using MimeKit;
+using System.Net;
 using System.Threading.Tasks;
+using System;
 
 namespace WebPWrecover.Services
 {
@@ -15,28 +18,30 @@ namespace WebPWrecover.Services
 
         public AuthMessageSenderOptions Options { get; } //set only via Secret Manager
         
-        public Task SendEmailAsync(string email, string subject, string message)
+        public async Task SendEmailAsync(string email, string subject, string message)
         {
-            return Execute(Options.SendGridKey, subject, message, email);
-        }
+            var emailMessage = new MimeMessage();
 
-        public Task Execute(string apiKey, string subject, string message, string email)
-        {
-            var client = new SendGridClient(apiKey);
-            var msg = new SendGridMessage()
+            emailMessage.From.Add(new MailboxAddress (Options.SendingUserName, Options.SendingUserEmail));
+            emailMessage.To.Add(new MailboxAddress("", email));
+            emailMessage.Subject = subject;
+            emailMessage.Body = new TextPart("html") {Text = message};
+            try
             {
-                From = new EmailAddress("postmaster@roshan.page", Options.SendGridUser),
-                Subject = subject,
-                PlainTextContent = message,
-                HtmlContent = message
-            };
-            msg.AddTo(new EmailAddress(email));
+                var client = new SmtpClient();                
+                await client.ConnectAsync(Options.SMTPdomain, 587, false);
+                await client.AuthenticateAsync(Options.SendingUserEmail,Options.SendingUserPassword);
 
-            // Disable click tracking.
-            // See https://sendgrid.com/docs/User_Guide/Settings/tracking.html
-            msg.SetClickTracking(false, false);
-
-            return client.SendEmailAsync(msg);
+                await client.SendAsync(emailMessage);
+                await client.DisconnectAsync(true);
+                
+            }
+            catch (Exception ex) //todo add another try to send email
+            {
+                var e = ex;
+                throw;
+            }          
+            
         }
     }
 }

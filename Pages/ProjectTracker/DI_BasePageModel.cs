@@ -15,6 +15,8 @@ namespace PortfolioPage.Pages.ProjectTracker
         protected UserManager<IdentityUser> UserManager { get; }
 
         public IList<project> projectList { get; set; }
+        // Used to temporarily store projects and be referenced by partial views
+        public project currentProject {get; set; } 
 
         public DI_BasePageModel(
             ApplicationDbContext context,

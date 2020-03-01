@@ -76,12 +76,12 @@ namespace PortfolioPage.Models
         [DisplayName("Project Components")]
         public ICollection<projectComponent> components {get; set;}
 
-        [DisplayName("Project Status")]
+        [DisplayName("Status")]
         [Description("The current status of this project")]
         [EnumDataType(typeof(projectStatus))]
         public projectStatus currentProjectStatus{get; set;}
                 
-        [DisplayName("Project Phase")]
+        [DisplayName("Phase")]
         [Description("The current phase that this project is in")]
         [EnumDataType(typeof(projectPhase))]        
         public projectPhase currentProjectPhase{get; set;}

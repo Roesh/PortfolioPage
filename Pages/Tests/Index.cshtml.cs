@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 
 
-namespace PortfolioPage.Pages
+namespace PortfolioPage.Pages.Tests
 {
     [AllowAnonymous]
     public class IndexModel : PageModel
@@ -17,7 +17,7 @@ namespace PortfolioPage.Pages
 
         public void OnGet()
         {
-            
+
         }
     }
 }

@@ -6,8 +6,9 @@ using MimeKit;
 using System.Net;
 using System.Threading.Tasks;
 using System;
+using PortfolioPage.Services;
 
-namespace WebPWrecover.Services
+namespace PortfolioPage.Services
 {
     public class EmailSender : IEmailSender
     {
@@ -22,15 +23,15 @@ namespace WebPWrecover.Services
         {
             var emailMessage = new MimeMessage();
 
-            emailMessage.From.Add(new MailboxAddress (Options.SendingUserName, Options.SendingUserEmail));
+            emailMessage.From.Add(new MailboxAddress (Options.RPAGE_SMTP_SendingUserName, Options.RPAGE_SMTP_SendingUserEmail));
             emailMessage.To.Add(new MailboxAddress("", email));
             emailMessage.Subject = subject;
             emailMessage.Body = new TextPart("html") {Text = message};
             try
             {
                 var client = new SmtpClient();                
-                await client.ConnectAsync(Options.SMTPdomain, 587, false);
-                await client.AuthenticateAsync(Options.SendingUserEmail,Options.SendingUserPassword);
+                await client.ConnectAsync(Options.RPAGE_SMTP_SMTPdomain, 587, false);
+                await client.AuthenticateAsync(Options.RPAGE_SMTP_SendingUserEmail,Options.RPAGE_SMTP_SendingUserPassword);
 
                 await client.SendAsync(emailMessage);
                 await client.DisconnectAsync(true);

@@ -4,109 +4,115 @@
 {
     Model.currentProject = item;
     <!-- master project card row -->
-    <!-- TODO: Implement some way to filter the projects list, perhaps using some personal preferences-->
-    <div class="row mx-3 my-3 text-dark">
-        <div class="col-md-4 card shadow">
-            <!-- Row 1 - Title-->
-            <div class="row row-cols-1">
-                <div class="col h3 mt-1 mb-1">
-                    @Html.DisplayFor(modelItem => item.title)
-                </div>   
-            </div>
+    <!-- TODO: Implement some way to filter the projects list, perhaps using some personal preferences-->    
+    <div class="col-md-11 card shadow mx-auto my-3 text-dark">
+        <div class="row">
+            <!-- High level details -->
+            <div class="col">
 
-            <!-- Row 2 - Visibility information -->    
-            <div class="row">          
-                @if(item.isPublic){
-                    <div class="col mb-1 text-info">
-                        This project is visible to the public
-                    </div>
-                }
-            </div>
+                <!-- Row 1 - Title-->
+                <div class="row">
+                    <div class="col h3 mt-1 mb-1">
+                        @Html.DisplayFor(modelItem => item.title)
+                    </div>   
+                </div>
 
-            <!-- Row 2 - Deadline information -->
-            <div class="row">
-                <div class="col mb-1 text-muted">   
-                    @if(item.completionDate != null){
-                        <i>This project was completed on @Html.DisplayFor(model => item.completionDate)</i>
-                    }
-                    else
-                    {
-                        <i>@Html.DisplayNameFor(model => model.projectList[0].completionDeadline):&nbsp;
-                        @Html.DisplayFor(model => item.completionDeadline)</i>                                              
-                    }
-                </div>              
-            </div>            
-            
-            <!-- Row 3 - Phase information-->
-            <div class="row">
-                <div class="col-auto mr-auto border border-secondary shadow rounded-right">
-
-                    <div class="row no-gutters">                            
-                        <!-- Phase information -->
-                        <div class="col-auto text-secondary">
-                            @Html.DisplayNameFor(model =>
-                            model.projectList[0].currentProjectPhase):&nbsp;
+                <!-- Row 2 - Visibility information -->    
+                <div class="row">          
+                    @if(item.isPublic){
+                        <div class="col mb-1 text-info">
+                            This project is visible to the public
                         </div>
-                        <div class="col-auto text-dark">
-                            @Html.DisplayFor(modelItem => item.currentProjectPhase)
-                        </div>
-                    </div>                                
-                    <div class="row mb-1 no-gutters">
-                        <!-- Status information -->
-                        <div class="col-auto text-secondary">                                        
+                    }
+                </div>
+
+                <!-- Row 3 - Deadline information -->
+                <div class="row">
+                    <div class="col mb-1 text-muted">   
+                        @if(item.completionDate != null){
+                            <i>This project was completed on @Html.DisplayFor(model => item.completionDate)</i>
+                        }
+                        else
+                        {
+                            <i>@Html.DisplayNameFor(model => model.projectList[0].completionDeadline):&nbsp;
+                            @Html.DisplayFor(model => item.completionDeadline)</i>                                              
+                        }
+                    </div>              
+                </div>            
+                
+                <!-- Row 4 - Phase information-->
+                <div class="row">
+                    <div class="col-auto mr-auto border border-secondary shadow rounded-right">
+
+                        <div class="row no-gutters">                            
+                            <!-- Phase information -->
+                            <div class="col-auto text-secondary">
                                 @Html.DisplayNameFor(model =>
-                                model.projectList[0].currentProjectStatus):&nbsp;
-                        </div>
-                        @if(item.currentProjectStatus == project.projectStatus.onTrack)
-                        {
-                        <div class="col-auto text-success align-self-center px-1">                                        
-                            <i><b>@Html.DisplayFor(modelItem => item.currentProjectStatus)</b></i>
-                        </div>
-                        }
-                        @if(item.currentProjectStatus == project.projectStatus.behind)
-                        {
-                        <div class="col-auto text-warning align-self-center px-1">
-                            <i><b>@Html.DisplayFor(modelItem => item.currentProjectStatus)</b></i>
-                        </div>
-                        }
-                        @if(item.currentProjectStatus == project.projectStatus.complete)
-                        {
-                        <div class="col-auto text-info align-self-center px-1">
-                            <i><b>@Html.DisplayFor(modelItem => item.currentProjectStatus)</b></i>
-                        </div>
-                        }
-                    </div>
-                </div>
-            </div>
-            <!-- End row 3 -->
-            <hr>
-
-            <!-- Row 4 -->
-            <div class="row mb-2">
-                <div class="col ml-1">
-                    <div class="row text-muted">
-                        @{
-                            var description = item.description;
-                            int descriptionLength = description.Length;
-                            if(descriptionLength > 200){
-                                description = description.Remove(200);
+                                model.projectList[0].currentProjectPhase):&nbsp;
+                            </div>
+                            <div class="col-auto text-dark">
+                                @Html.DisplayFor(modelItem => item.currentProjectPhase)
+                            </div>
+                        </div>                                
+                        <div class="row mb-1 no-gutters">
+                            <!-- Status information -->
+                            <div class="col-auto text-secondary">                                        
+                                    @Html.DisplayNameFor(model =>
+                                    model.projectList[0].currentProjectStatus):&nbsp;
+                            </div>
+                            @if(item.currentProjectStatus == project.projectStatus.onTrack)
+                            {
+                            <div class="col-auto text-success align-self-center px-1">                                        
+                                <i><b>@Html.DisplayFor(modelItem => item.currentProjectStatus)</b></i>
+                            </div>
                             }
-                        }
-                        @description ...
+                            @if(item.currentProjectStatus == project.projectStatus.behind)
+                            {
+                            <div class="col-auto text-warning align-self-center px-1">
+                                <i><b>@Html.DisplayFor(modelItem => item.currentProjectStatus)</b></i>
+                            </div>
+                            }
+                            @if(item.currentProjectStatus == project.projectStatus.complete)
+                            {
+                            <div class="col-auto text-info align-self-center px-1">
+                                <i><b>@Html.DisplayFor(modelItem => item.currentProjectStatus)</b></i>
+                            </div>
+                            }
+                        </div>
                     </div>
-                    <div class="row text-info">
-                        Components link and summary
-                    </div>
-                    <div class="row text-info">
-                        Issues link and summary
-                    </div>                    
                 </div>
 
-                <div class="col-sm-2 pr-1 ml-auto align-self-start">
-                    <partial name="_ProjectActionsPartial" />
-                </div>                
-            </div>      
-
+            </div>
+            <!-- High level actions -->
+            <div class="row justify-content-end">
+                <div class="col align-contents-center mr-5">                    
+                    <partial name="_ProjectActionsPartial" />   
+                </div>             
+            </div>  
         </div>
+        <hr>
+
+        <!-- Row 5 Description, actions view-->
+        <div class="row mb-2">
+            <div class="col ml-1">
+                <div class="row text-muted">
+                    @{
+                        var description = item.description;
+                        int descriptionLength = description.Length;
+                        if(descriptionLength > 200){
+                            description = description.Remove(200);
+                        }
+                    }
+                    @description ...
+                </div>
+                <div class="row text-info">
+                    Components link and summary
+                </div>
+                <div class="row text-info">
+                    Issues link and summary
+                </div>                    
+            </div>
+        </div>     
     </div>
+    
 }

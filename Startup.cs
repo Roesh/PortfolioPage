@@ -16,10 +16,10 @@ using Microsoft.AspNetCore.HttpOverrides;
 using System.Runtime.InteropServices;
 using System.IO;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using WebPWrecover.Services;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using PortfolioPage.Authorization;
+using PortfolioPage.Services;
 
 namespace PortfolioPage
 {    

@@ -18,10 +18,10 @@
             @Html.DisplayFor(model => model.Project.title)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Project.description)
+            @Html.DisplayNameFor(model => model.Project.goalDescription)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Project.description)
+            @Html.DisplayFor(model => model.Project.goalDescription)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Project.startDate)
@@ -60,8 +60,6 @@
             @Html.DisplayFor(model => model.Project.isPublic)
         </dd>
     </dl>
+    
 </div>
-<div>
-    <a asp-page="./Edit" asp-route-id="@Model.Project.ID">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
-</div>
+<!-- TO DO: Add project component detail summary and issue summary cards here -->

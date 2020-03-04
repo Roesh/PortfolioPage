@@ -15,10 +15,10 @@ namespace PortfolioPage.Models
 
         public int ID { get; set; }
         
-        [StringLength(magicNumbers.maxProjectTitleLength,  ErrorMessage = magicNumbers.errorMessage_maxProjectTitleLength)]
+        [StringLength(magicNumbers.maxProjectTitleLength)]
         public string updateTitle { get; set; }
         
-        [StringLength(magicNumbers.maxDescriptionLength,  ErrorMessage = magicNumbers.errorMessage_maxDescriptionLength)]
+        [StringLength(magicNumbers.maxDescriptionLength)]
         public string updateText {get; set;}
 
         [EnumDataType(typeof(updateType))]
@@ -38,10 +38,10 @@ namespace PortfolioPage.Models
         [DataType(DataType.Date)]
         public DateTime updateDate;
         
-        [StringLength(magicNumbers.maxProjectTitleLength,  ErrorMessage = magicNumbers.errorMessage_maxProjectTitleLength)]
+        [StringLength(magicNumbers.maxProjectTitleLength)]
         public string updateTitle { get; set; }
         
-        [StringLength(magicNumbers.maxDescriptionLength,  ErrorMessage = magicNumbers.errorMessage_maxDescriptionLength)]
+        [StringLength(magicNumbers.maxDescriptionLength)]
         public string updateText {get; set;}
 
         [EnumDataType(typeof(projectUpdate.updateType))]

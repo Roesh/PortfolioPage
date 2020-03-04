@@ -12,46 +12,47 @@
 <div class="row">
     <div class="col-md-4">
         <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="project.ID" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>            
             <div class="form-group">
-                <label asp-for="project.title" class="control-label"></label>
-                <input asp-for="project.title" class="form-control" />
-                <span asp-validation-for="project.title" class="text-danger"></span>
+                <label asp-for="projectVM.title" class="control-label"></label>
+                <input asp-for="projectVM.title" class="form-control" />
+                <span asp-validation-for="projectVM.title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="project.description" class="control-label"></label>
-                <input asp-for="project.description" class="form-control" />
-                <span asp-validation-for="project.description" class="text-danger"></span>
+                <label asp-for="projectVM.goalDescription" class="control-label"></label>
+                <input asp-for="projectVM.goalDescription" class="form-control" />
+                <span asp-validation-for="projectVM.goalDescription" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="project.startDate" class="control-label"></label>
-                <input asp-for="project.startDate" class="form-control" />
-                <span asp-validation-for="project.startDate" class="text-danger"></span>
+                <label asp-for="projectVM.startDate" class="control-label"></label>
+                <input asp-for="projectVM.startDate" class="form-control" />
+                <span asp-validation-for="projectVM.startDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="project.completionDate" class="control-label"></label>
-                <input asp-for="project.completionDate" class="form-control" />
-                <span asp-validation-for="project.completionDate" class="text-danger"></span>
+                <label asp-for="projectVM.completionDate" class="control-label"></label>
+                <input asp-for="projectVM.completionDate" class="form-control" />
+                <span asp-validation-for="projectVM.completionDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="project.completionDeadline" class="control-label"></label>
-                <input asp-for="project.completionDeadline" class="form-control" />
-                <span asp-validation-for="project.completionDeadline" class="text-danger"></span>
+                <label asp-for="projectVM.completionDeadline" class="control-label"></label>
+                <input asp-for="projectVM.completionDeadline" class="form-control" />
+                <span asp-validation-for="projectVM.completionDeadline" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="project.currentProjectStatus" class="control-label"></label>
-                <select asp-for="project.currentProjectStatus" class="form-control"></select>
-                <span asp-validation-for="project.currentProjectStatus" class="text-danger"></span>
+                <label asp-for="projectVM.currentProjectStatus" class="control-label"></label>
+                <select asp-for="projectVM.currentProjectStatus" class="form-control"
+                    asp-items="Html.GetEnumSelectList<PortfolioPage.Models.project.projectStatus>()"></select>
+                <span asp-validation-for="projectVM.currentProjectStatus" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="project.currentProjectPhase" class="control-label"></label>
-                <select asp-for="project.currentProjectPhase" class="form-control"></select>
-                <span asp-validation-for="project.currentProjectPhase" class="text-danger"></span>
+                <label asp-for="projectVM.currentProjectPhase" class="control-label"></label>
+                <select asp-for="projectVM.currentProjectPhase" class="form-control"
+                    asp-items="Html.GetEnumSelectList<PortfolioPage.Models.project.projectPhase>()"></select>
+                <span asp-validation-for="projectVM.currentProjectPhase" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="project.isPublic" /> @Html.DisplayNameFor(model => model.project.isPublic)
+                    <input class="form-check-input" asp-for="projectVM.isPublic" /> @Html.DisplayNameFor(model => model.projectVM.isPublic)
                 </label>
             </div>
             <div class="form-group">
@@ -62,6 +63,6 @@
 </div>
 
 <div>
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="ProjectTracker/MyProjects">Back to Dashboard</a>
 </div>
 

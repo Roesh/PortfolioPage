@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -11,23 +11,24 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">
-                    <img src="~/resources/abs158-floral.png" width="70" height="39" alt="Project's icon">
-                </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">                    
-                    <ul class="navbar-nav flex-grow-1 text-info">
-                        <li class="nav-item">
-                            <a class="nav-link" href="https://www.roshan.page/static/career.html">Career</a>
-                        </li>            
-                        <li class="nav-item">
-                            <a class="nav-link" href="https://www.roshan.page/static/Resources/Roshan's resume.pdf">
-                                Resume        
-                            </a>                        
-                        </li>                    
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <partial name="_LoginPartial" />
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item mr-2">
+                            <a class="btn btn-info nav-link" 
+                                asp-page="/ProjectTracker/MyProjects">
+                                <img src="~/resources/analytics.svg" alt="Project tracker" style="width: 32px; height: 32px">
+                            </a>
+                        </li>         
+                        @if(Model.getLoggedInUserName() == "RoshanJM"){
+                            <li class="nav-item">
+                                <a class="btn btn-info text-light nav-link" asp-area="" asp-page="/ProjectTracker/Project/allProjects">All projects</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -41,7 +42,9 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2020 - Roshan Manuel - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            &copy; 2020 - Roshan Manuel - <a asp-area="" asp-page="/Privacy">Privacy</a> | 
+            Icons made by <a href="https://www.flaticon.com/authors/nhor-phai" title="Nhor Phai">Nhor Phai</a> 
+            from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
         </div>
     </footer>
 

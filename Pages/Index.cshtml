@@ -4,35 +4,40 @@
 ViewData["Title"] = "Home page";
 }
 
-<div class="container-md">
-    <div class="text-center">
-        <div class="display-4 mb-4">Roshan Manuel</div>
-        <a href="./Tests/" class="btn btn-primary">Test Page</a>
-        <a href="./ProjectTracker/MyProjects" class="btn btn-primary">My projects</a>
+<div class="container-md">    
+        <div class="display-4 mb-5 mt-4">Roshan Manuel</div>
+        <!--a href="./Tests/" class="btn btn-primary">Test Page</a-->
+        <!--a href="./ProjectTracker/MyProjects" class="btn btn-primary">My projects</a-->
         <hr>
         
         <!--p class="text-muted mb-3">Portfolio under construction!</p-->
-        <div class="row">
+        <div class="row px-3">
             <!-- Project tracker showcase card --> 
             <div class="col-md">
-                <div class="card w-100">                    
+                
+                <!-- https://stackoverflow.com/questions/2041388/how-to-remove-the-underline-for-anchorslinks -->
+                <a class="card w-100" href="./ProjectTracker/Project?user=RoshanJM" style="text-decoration: none !important;">                    
+                    <img src="~/resources/pTracker_dashboardPage.png" class="card-img-top rounded-top" 
+                    style="max-width: 696px;margin-left: auto; margin-right: auto;" alt="...">                                        
+                    <i class="text-muted text-center">Dashboard view from the application</i>
                     <div class="card-body">
-                        <div class="h5 card-title">Project Tracker</div>
+                        <div class="h3 card-title">Project Tracker</div>                        
                         <p class="card-text text-muted">
-                            My first project is a project tracker application designed to help manage multiple projects and meet deadlines.                                                        
+                            (In progress) An application designed to help individual users manage multiple projects at once. 
                         </p>                        
+                        <p class="card-text text-muted">
+                            It is built using ASP.NET, and implements access to pages via authentication and simple authorization policies.
+                            It processes HTTP requests and dynamically generates responses via microsoft's Razor Page models.
+                        </p>
                     </div>
-                    <a href="./ProjectTracker/Project?user=me@roshan.page">
-                        <img src="~/resources/pTracker_dashboardPage.png" class="card-img-top rounded-top" alt="...">
-                    </a>                    
-                </div>                                    
+                </a>                                    
             </div>
             <!-- https://getbootstrap.com/docs/4.4/utilities/display/ -->
             <div class="col-md d-block d-md-none mb-2 w-auto"></div>
             
-            <!-- two row column showcasing two projects --> 
+            <!-- two row column showcasing two projects -> 
             <div class="col-md">
-                <!-- {Project A} tracker --> 
+                <!-- {Project A} tracker -> 
                 <div class="row mb-2">
                     <div class="col-md">
                         <div class="card w-100">
@@ -45,7 +50,7 @@ ViewData["Title"] = "Home page";
                     </div>                    
                 </div>
                 
-                <!-- {Project B} tracker -->
+                <!-- {Project B} tracker ->
                 <div class="row">
                     <div class="col-md">
                         <div class="card w-100">
@@ -57,8 +62,8 @@ ViewData["Title"] = "Home page";
                         </div>
                     </div>
                 </div>
-            </div>            
+            </div-->            
                 
         </div>
-    </div>
+    
 </div>

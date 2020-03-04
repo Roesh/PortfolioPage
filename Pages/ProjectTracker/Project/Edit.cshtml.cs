@@ -10,22 +10,27 @@ using PortfolioPage.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using PortfolioPage.Models;
+using PortfolioPage.Pages;
 
 namespace PortfolioPage.Pages.ProjectTracker.Project
 {
-    [Authorize]
-    public class EditModel : PageModel
+    public class EditModel : DI_BasePageModel
     {
-        private readonly PortfolioPage.Data.ApplicationDbContext _context;
-
-        public EditModel(PortfolioPage.Data.ApplicationDbContext context)
-        {
-            _context = context;
+        public EditModel(
+            ApplicationDbContext context,
+            IAuthorizationService authorizationService,
+            UserManager<IdentityUser> userManager)
+            : base(context, authorizationService, userManager)
+        {            
         }
 
         [BindProperty]
+        public projectViewModel projectVM { get; set; }
+
         public project project { get; set; }
 
+        // TODO: Make this more efficient        
+        
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -33,48 +38,67 @@ namespace PortfolioPage.Pages.ProjectTracker.Project
                 return NotFound();
             }
 
-            project = await _context.project.FirstOrDefaultAsync(m => m.ID == id);
-
+            project = await Context.project.FirstOrDefaultAsync(m => m.ID == id);
+            
             if (project == null)
             {
                 return NotFound();
             }
+            // TODO: Move this to authorization folder
+            if(project.creatingUserID != getLoggedInUserId()){
+                return Forbid();
+            }
+
+            projectVM = populateVitrualModelFromProject(project);
             return Page();
         }
 
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(int id)
         {
+            // Make sure view model is valid first
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            _context.Attach(project).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
+            var project = await Context.project.FindAsync(id);
+                        
+            if(project == null){
+                return NotFound();
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!projectExists(project.ID))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+            if(project.creatingUserID != getLoggedInUserId()){
+                return Forbid();
             }
-
-            return RedirectToPage("./Index");
+            
+            // Update project entry with view model values            
+            var projectEntry = Context.Attach(project);
+            projectEntry.CurrentValues.SetValues(projectVM);
+            
+            ModelState.Clear();
+            if (!TryValidateModel(projectEntry.Entity))
+            {
+                return Page();
+            }
+            // TODO: Drive actions after successfully saving data
+            await Context.SaveChangesAsync();                
+            
+            return RedirectToPage("/ProjectTracker/MyProjects");
+            
         }
 
-        private bool projectExists(int id)
-        {
-            return _context.project.Any(e => e.ID == id);
+        private projectViewModel populateVitrualModelFromProject(project project){
+            projectViewModel projectVM = new projectViewModel();            
+            projectVM.title = project.title;
+            projectVM.goalDescription = project.goalDescription;
+            projectVM.startDate = project.startDate;
+            projectVM.completionDate = project.completionDate;
+            projectVM.completionDeadline = project.completionDeadline;
+            projectVM.currentProjectStatus = project.currentProjectStatus;
+            projectVM.currentProjectPhase = project.currentProjectPhase;
+            projectVM.isPublic = project.isPublic;
+            return projectVM;
         }
     }
 }

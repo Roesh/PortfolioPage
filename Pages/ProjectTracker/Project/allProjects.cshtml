@@ -1,5 +1,5 @@
 @page
-@model PortfolioPage.Pages.ProjectTracker.Project.IndexModel
+@model PortfolioPage.Pages.ProjectTracker.Project.allProjectsModel
 
 @{
 ViewData["Title"] = "Index";
@@ -29,42 +29,28 @@ ViewData["Title"] = "Index";
 </style>
 
 <div class="container-lg">
-    @if(Model.RequestedUserFound){
-        <div class="row">
-            <div class="col card grad-bg-1">        
-                
-                    <p class="row h4 my-5 mb-4 px-3">Viewing&nbsp;<b>@Model.requestedUserName's</b>&nbsp;public projects</p>                
-                
-            </div>
-        </div>    
-        <hr>
-    }
-
-    
-    @if(!Model.RequestedUserFound){
-        <div class="row">
-            <div class="col">
-                <div class="display-4">User @Model.requestedUserName was not found</div>                                                 
-            </div>
+    <div class="row">
+        <div class="col card grad-bg-1">
+            <div class="display-3 mb-4 ml-1">Project master index</div>                        
         </div>
-        return;
-    }
+    </div>
+    <hr>
 
     <!-- https://stackoverflow.com/questions/24390005/checking-for-empty-or-null-liststring -->
     <!-- https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/null-coalescing-operator -->
     @if((!Model.projectList?.Any() ?? false)) {
         <div class="row">
             <div class="col">
-                <div class="display-4">User @Model.requestedUserName has no publicly viewable projects</div>                                                 
+                <div class="display-4">No projects in database</div>
             </div>
-        </div>        
+        </div>
         return;
     }
     
     <div class="row">
         <div class="col card grad-bg-2">
-            <partial name="_ProjectCardPartial" />
-        </div>        
+            <partial name="_AllProjectsCardPartial" />
+        </div>
     </div>
 
 </div>

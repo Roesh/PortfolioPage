@@ -31,18 +31,20 @@ namespace PortfolioPage.Pages.ProjectTracker
 
         
         public string userName;
-
+        
         public async Task OnGetAsync()
         {
-            string currentUserId = UserManager.GetUserId(User);
-            userName = User.Identity.Name;
+            string currentUserId = getLoggedInUserId();
+            userName = getLoggedInUserName();
             
             var projects = from c in Context.project
                         where c.creatingUserID == currentUserId
                         select c;
 
             projectList = await projects.ToListAsync();
-            
+
+            viewingUserCanDelete = true;           
+            viewingUserCanEdit = true;         
         }
     }
 }

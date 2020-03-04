@@ -25,6 +25,7 @@ namespace PortfolioPage.Pages.ProjectTracker.Project
         public bool RequestedUserFound = true;  
         public string requestedUserName = "";  
 
+        
         public async Task OnGetAsync(string user)
         {
             this.requestedUserName = user;
@@ -43,6 +44,14 @@ namespace PortfolioPage.Pages.ProjectTracker.Project
                             select c;
                 
                 projectList = await projects.ToListAsync();
+            }
+            
+            // TODO: Action obscurity logic currently assumes that pages will either only contain 
+            // projects that a user has access to edit and such or not.
+            // If this changes, this will have to change along with it.
+            if(requestedUserId == getLoggedInUserId()){
+                viewingUserCanEdit = true;
+                viewingUserCanDelete = true;
             }
         }
     }

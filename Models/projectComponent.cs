@@ -12,7 +12,7 @@ namespace PortfolioPage.Models
 
         public int projectID { get; set; } // how to represent a many to one relationship? Or a one to many relationship?
         // Assuming one to one relationship is mapped via class name and one to many is via the ICollections method.
-        [StringLength(magicNumbers.maxProjectTitleLength,  ErrorMessage = magicNumbers.errorMessage_maxProjectTitleLength)]
+        [StringLength(magicNumbers.maxProjectTitleLength, MinimumLength = magicNumbers.minProjectTitleLength,  ErrorMessage = "{0} length must be between {2} and {1}.")]
         public string title {get; set;}
         public string description { get; set; }
 

@@ -12,12 +12,15 @@ using PortfolioPage.Models;
 
 namespace PortfolioPage.Pages.ProjectTracker.Project
 {
-    [Authorize]
-    public class DeleteModel : PageModel
+    public class DeleteModel : DI_BasePageModel
     {
         private readonly PortfolioPage.Data.ApplicationDbContext _context;
 
-        public DeleteModel(PortfolioPage.Data.ApplicationDbContext context)
+        public DeleteModel(
+            ApplicationDbContext context,
+            IAuthorizationService authorizationService,
+            UserManager<IdentityUser> userManager)
+            : base(context, authorizationService, userManager)
         {
             _context = context;
         }
@@ -25,18 +28,17 @@ namespace PortfolioPage.Pages.ProjectTracker.Project
         [BindProperty]
         public project project { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             project = await _context.project.FirstOrDefaultAsync(m => m.ID == id);
 
             if (project == null)
             {
                 return NotFound();
+            }
+            // TODO: Move this to authorization folder
+            if(project.creatingUserID != getLoggedInUserId()){
+                return Forbid();
             }
             return Page();
         }
@@ -49,14 +51,19 @@ namespace PortfolioPage.Pages.ProjectTracker.Project
             }
 
             project = await _context.project.FindAsync(id);
-
-            if (project != null)
-            {
-                _context.project.Remove(project);
-                await _context.SaveChangesAsync();
+            
+            if (project == null){
+                return NotFound();
             }
+            // TODO: Move this to authorization folder
+            if(project.creatingUserID != getLoggedInUserId()){
+                return Forbid();
+            }
+        
+            _context.project.Remove(project);
+            await _context.SaveChangesAsync();    
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/ProjectTracker/MyProjects");
         }
     }
 }

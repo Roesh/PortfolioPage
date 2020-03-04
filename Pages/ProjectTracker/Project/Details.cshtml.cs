@@ -13,6 +13,7 @@ using PortfolioPage.Authorization;
 
 namespace PortfolioPage.Pages.ProjectTracker.Project
 {
+    [AllowAnonymous]
     public class DetailsModel : DI_BasePageModel
     {
         public DetailsModel(
@@ -34,17 +35,9 @@ namespace PortfolioPage.Pages.ProjectTracker.Project
                 return NotFound();
             }
 
-            if (!User.Identity.IsAuthenticated)
-            {
-                return Challenge();
-            }
-
             var isPublic = Project.isPublic;
 
-            var currentUserId = UserManager.GetUserId(User);
-
-            if (!isPublic
-                && currentUserId != Project.creatingUserID)
+            if (!isPublic)
             {
                 return Forbid();
             }

@@ -1,0 +1,84 @@
+SRS - Software requirement specification
+
+https://www.tutorialspoint.com/software_engineering/index.htm
+
+Software engineering is an engineering branch associated with development of software product using well-defined scientific principles, methods and procedures. The outcome of software engineering is an efficient and reliable software product.
+
+Software project management has wider scope than software engineering process as it involves communication, pre and post delivery support etc.
+
+This tutorial should provide you basic understanding of software product, software design and development process, software project management and design complexities etc. At the end of the tutorial you should be equipped with well understanding of software engineering concepts.
+
+
+https://www.tutorialspoint.com/software_engineering/software_development_life_cycle.htm
+
+The above page can help generate templates for our project.
+
+Tutorial point's take on software projects:
+
+The job pattern of an IT company engaged in software development can be seen split in two parts:
+
+    Software Creation
+    Software Project Management
+
+A project is well-defined task, which is a collection of several operations done in order to achieve a goal (for example, software development and delivery). A Project can be characterized as:
+
+    Every project may has a unique and distinct goal.
+    Project is not routine activity or day-to-day operations.
+    Project comes with a start time and end time.
+    Project ends when its goal is achieved hence it is a temporary phase in the lifetime of an organization.
+    Project needs adequate resources in terms of time, manpower, finance, material and knowledge-bank.
+
+Project tracker: 
+
+Project Tracker:
+
+Project goal - Create an application to help users track and manage their projects
+
+I have already created a database diagram to store project details. This week, I am going to complete the project and project component database structure and the 
+, implementation of CRUD operations for both. If I have time, I will also customize the UI to display them both.
+
+1) Project data:
+Models/Project.cs contains the model for the project.
+3_2_2020 - Finalize datapoints based on requirements defined:
+    a) A project is well-defined task 
+     > Already implemented in project table
+    b)  is a collection of several operations done in order to achieve a goal (for example, software development and delivery)
+     > Already implemented via the project component database.
+    c) Project is not routine activity or day-to-day operations. 
+     > This is usage advise. This project tracker will assume that projects are distinct from "operations". Nothing comes to mind in the software side that would be impacted by this advice
+    d) Project comes with a start time and end time.
+     > Already implemented in project table
+    e) Project ends when its goal is achieved hence it is a temporary phase in the lifetime of an organization.
+     > Project statuses implemneted in project table, including completed status
+    f) Project needs adequate resources in terms of time, manpower, finance, material and knowledge-bank.
+     > Out of scope - we are not creating a team structuring system, or communications system, or knowledge, materials or financial tracking
+
+    In addition to the above, every project will have an owner. The project can also be public or private. If a project is public, anonymous read only access to all the project's details is allowed.
+
+3_4_2020 - I have successfully implemented Create, Update and Delete operations on the project Entity. I will now begin work on the same for project components
+
+2) Project operations:
+Pages/Project/* hold the CRUD operations needed.
+
+
+3) Project Component:
+Models/ProjectComponent.cs contains the model for the project.
+    a) This current iteration of the "project component" is left as general as possible.
+    It will contain all of the columns that a project has, including begin date, completion deadline, and component goal. that make sense
+4) 
+
+=== Items specifically not implemented for this project deliverable, but nice to have in the future:
+
+Actions that users take will be logged in a separate "events" table, this events database will include a column for
+the affected table (project was modified or component was), will store the id, will store the type of event (which will be different based on the item type selected)
+
+These actions will then drive updates to the database and notify users of crucial details. For example, we can send users an email if a project component is marked as completed
+
+=== A list of documents for both project and project component. Document types will also be useful; for example, we can have a table of documents that relates projects and components with various documents. For example, a project may have an "SRS" document type 
+
+=== The usage of project Templates. These will create a project and automatically create project components of various types.
+For example, we could have a Agile template which will provide users with agile specific fields.
+If we implement actions, the actions will also be tailored toward these templates.
+
+=== More granular security implementation, where you can control which items are visible to anyone, etc.
+

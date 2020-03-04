@@ -26,7 +26,21 @@ namespace PortfolioPage.Pages.ProjectTracker
             Context = context;
             UserManager = userManager;
             AuthorizationService = authorizationService;
+        }        
+
+        public string getLoggedInUserName(){
+            return User.Identity.Name;
         }
+        public string getLoggedInUserId(){
+            return UserManager.GetUserId(User);
+        }
+        
+        //TODO; see if this needs to move to the authorization folders somehow              
+        // This is probably the correct spot for this though based on the fact that 
+        // partial views reference this model for global configuration
+        public bool viewingUserCanEdit = false;
+        public bool viewingUserCanDelete = false;
+        public bool viewingUserCanViewDetails = true;
 
         /*TODO: Write unit tests to test out individual methods. Investigate various methods of unit testing */
         public bool userIdExists(string userID){

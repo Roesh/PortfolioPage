@@ -24,28 +24,42 @@ namespace PortfolioPage.Pages.ProjectTracker.Project
         }
 
         public IActionResult OnGet()
-        {
+        {     
             return Page();
         }
 
         [BindProperty]
-        public project project { get; set; }
+        public projectViewModel projectVM { get; set; }
 
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
+        
         public async Task<IActionResult> OnPostAsync()
         {
+            // Make sure view model is valid first
             if (!ModelState.IsValid)
             {
                 return Page();
             }
+            
+            var projectEntry = Context.Add(new project());
+            projectEntry.CurrentValues.SetValues(projectVM);
 
-            project.creatingUserID = UserManager.GetUserId(User);
+            { // Automatic behind the scenes population
+                projectEntry.Entity.creatingUserID = getLoggedInUserId();
+                projectEntry.Entity.creationDate = DateTime.Now;
+            }
 
-            Context.project.Add(project);
+            ModelState.Clear();
+            
+            if (!TryValidateModel(projectEntry.Entity,nameof(projectEntry)))
+            {
+                return Page();
+            }
+            
             await Context.SaveChangesAsync();
 
-            return RedirectToPage("../MyProjects");
+            return RedirectToPage("/ProjectTracker/MyProjects");
         }
     }
 }

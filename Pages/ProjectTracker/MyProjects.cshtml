@@ -29,17 +29,16 @@ ViewData["Title"] = "Index";
 </style>
 
 <div class="container-lg">
+
     <div class="row">
         <div class="col card grad-bg-1">
-            <div class="row-cols-1">
-                <div class="col-md-7 display-3 mb-2">
-                    Project Dashboard
-                </div>
-                <div class="col mb-4 px-3">
-                    Review ongoing and completed projects here
-                </div>
+            <div class="display-3 mb-4 ml-1">
+                Project Dashboard
             </div>
-        </div>
+            <p class="col h4 mb-4">
+                Review ongoing and completed projects here
+            </p>
+        </div>                    
     </div>
     <hr>
 
@@ -50,34 +49,31 @@ ViewData["Title"] = "Index";
         <div class="row">
             <div class="col">
                 <div class="display-4 mb-2">Create your first project:</div>
-                <a asp-page="./Project/Create">
-                <button class="btn btn-primary h2 my-2">
+                <a class="col col-md-2 btn btn-success align-self-center ml-auto my-2"
+                    asp-page="/ProjectTracker/Project/Create">
                     <i>New Project</i>
-                </button>
                 </a>
                 <br>
                 <p>You can learn more about the project management workflow and how the tracker works here</p>
             </div>
         </div>
+        return;
     }
-    else{
-        <!-- https://getbootstrap.com/docs/4.4/layout/grid/#horizontal-alignment -->
-        <div class="row mb-2">
-            <div class="col-md-6 mb-2">
-                <div class="display-4">Your ongoing projects</div>            
-            </div>
-
-            <div class="col-md-2 align-self-center ml-auto mb-2">
-                <a asp-page="./Project/Create">
-                    <button class="btn grad-bg-2 h2 mx-3 my-2 w-100">
-                        <i>New Project</i>
-                    </button>
-                </a>
-            </div>
+    <!-- https://getbootstrap.com/docs/4.4/layout/grid/#horizontal-alignment -->
+    <div class="row mb-4">
+        <div class="col-md-9">
+            <div class="display-4">Your ongoing projects</div>            
         </div>
-                
-        <div class="row border border-secondary rounded grad-bg-2">
+        <a class="col col-md-2 btn btn-success align-self-center ml-auto my-2"
+            asp-page="/ProjectTracker/Project/Create">
+            <i>New Project</i>
+        </a>        
+    </div>
+            
+    <div class="row">
+        <div class="col card grad-bg-2">
             <partial name="_ProjectCardPartial" />
         </div>
-    }
+    </div>
+    
 </div>

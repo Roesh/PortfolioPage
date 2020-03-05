@@ -111,6 +111,7 @@ namespace PortfolioPage.Models
         [Description("The current status of this project")]
         [EnumDataType(typeof(projectStatus))]
         public projectStatus currentProjectStatus{get; set;}
+        public ICollection<projectStatusHistory> projectStatusHx {get;set; }
                 
         [Required]
         [DisplayName("Phase")]

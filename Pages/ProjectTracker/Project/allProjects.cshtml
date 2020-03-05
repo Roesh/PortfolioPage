@@ -36,8 +36,8 @@ ViewData["Title"] = "Index";
     </div>
     <hr>
 
-    <!-- https://stackoverflow.com/questions/24390005/checking-for-empty-or-null-liststring -->
-    <!-- https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/null-coalescing-operator -->
+    @* https://stackoverflow.com/questions/24390005/checking-for-empty-or-null-liststring *@
+    @* https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/null-coalescing-operator *@
     @if((!Model.projectList?.Any() ?? false)) {
         <div class="row">
             <div class="col">

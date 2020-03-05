@@ -6,6 +6,7 @@ namespace PortfolioPage.Models
 {
     public abstract class eventHistory
     {
+        [Key]
         public int ID { get; set; }
 
         [DataType(DataType.Date)]

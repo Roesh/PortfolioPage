@@ -21,7 +21,7 @@ namespace PortfolioPage.Pages.ProjectTracker.Project
         {
         }
 
-        private const string masterUserName = "me@roshan.page";
+        private const string masterUserName = "RoshanJM";
         
         public async Task<IActionResult> OnGetAsync(){
             

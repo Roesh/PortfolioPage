@@ -10,7 +10,7 @@ namespace PortfolioPage.Data
 {
     public static class SeedData
     {
-        public static async Task Initialize(IServiceProvider serviceProvider, string testUserPw)
+        public static async Task Initialize(IServiceProvider serviceProvider, string testUserPw, string testUserName, string testUserEmail)
         {
             using (var context = new ApplicationDbContext(
                 serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>()))
@@ -20,7 +20,7 @@ namespace PortfolioPage.Data
                 // dotnet user-secrets set SeedUserPW <pw>
                 // The admin user can do anything
 
-                var creatingUserID = await EnsureUser(serviceProvider, testUserPw, "RoshanJM", "me@roshan.page");
+                var creatingUserID = await EnsureUser(serviceProvider, testUserPw, testUserName, testUserEmail);
 
                 SeedDB(context, creatingUserID);
             }
@@ -64,7 +64,7 @@ namespace PortfolioPage.Data
                     creationDate = DateTime.Now,
                     goalDescription = "The motivation behind this project is two-fold. First, it will help me set, track and meet my future portfolio project deadlines. Second, once a project is complete, it will serve as a repository of knowledge and experience. I often find myself in situations where I encountered a problem I'm facing in the past, but either don't remember the solution I used or worse, don't remember the problem I was working on.",
                     startDate = DateTime.Parse("2020-2-14"),
-                    completionDeadline = DateTime.Parse("2020-3-13"),
+                    completionDeadline = DateTime.Parse("2020-3-22"),
                     currentProjectPhase = project.projectPhase.Execution,
                     currentProjectStatus = project.projectStatus.onTrack,
                     isPublic = true

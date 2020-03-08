@@ -30,9 +30,11 @@ namespace PortfolioPage
                     // Set password with the Secret Manager tool.
                     // dotnet user-secrets set SeedUserPW <pw>
 
-                    var testUserPw = config["SeedUserPW"];
+                    var testUserPw = config["RPAGE_SeedUserPW"];
+                    var testUserName = config["RPAGE_SeedUserName"];
+                    var testUserEmail = config["RPAGE_SeedUserEmail"];
 
-                    SeedData.Initialize(services, testUserPw).Wait();
+                    SeedData.Initialize(services, testUserPw, testUserName, testUserEmail).Wait();
                 }
                 catch (Exception ex)
                 {

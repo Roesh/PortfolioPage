@@ -13,6 +13,7 @@ using PortfolioPage.Pages.ProjectTracker;
 
 namespace PortfolioPage.Pages.ProjectTracker.Component
 {
+    [AllowAnonymous]
     public class DetailsModel : DI_BasePageModel
     {
 
@@ -43,12 +44,20 @@ namespace PortfolioPage.Pages.ProjectTracker.Component
                             where pc.projectComponentID == projectComponent.ID
                             select pc).Include(pc => pc.childComponents).ToList();
             //AUTHORIZATION
-            if (projectComponent.creatingUserID != getLoggedInUserId())
+            bool loginUserIsComponentOwner = (projectComponent.creatingUserID == getLoggedInUserId());
+
+            if (loginUserIsComponentOwner && 
+                (await Context.project.FirstOrDefaultAsync
+                (m => m.ID == projectComponent.projectID))
+                .isPublic == false)
             {
                 return Forbid();
             }
-            viewingUserCanDelete = true;
-            viewingUserCanEdit = true;
+            if(loginUserIsComponentOwner){
+                viewingUserCanDelete = true;
+                viewingUserCanEdit = true;
+            }
+            
             return Page();
         }
     }

@@ -56,10 +56,13 @@ Models/Project.cs contains the model for the project.
     In addition to the above, every project will have an owner. The project can also be public or private. If a project is public, anonymous read only access to all the project's details is allowed.
 
 3_4_2020 - I have successfully implemented Create, Update and Delete operations on the project Entity. I will now begin work on the same for project components
+3_5_2020 - see 3_5_2020.txt on the server. I bring up the authorization issue there
+3_6_2020 - See 3_6_2020.txt on the server.
+3_7_2020 - Project component create and edit actions complete. For the delete action, we need to decide what to happen to the child components. Currently defaulting to 
+deleting the child components as well.
 
 2) Project operations:
 Pages/Project/* hold the CRUD operations needed.
-
 
 3) Project Component:
 Models/ProjectComponent.cs contains the model for the project.

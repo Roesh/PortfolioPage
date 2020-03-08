@@ -38,10 +38,10 @@ namespace PortfolioPage.Pages.ProjectTracker.Project
             }
 
             else{                
-                var projects = from c in Context.project
+                var projects = (from c in Context.project
                             where c.creatingUserID == requestedUserId 
                             && c.isPublic
-                            select c;
+                            select c).Include(project => project.components);
                 
                 projectList = await projects.ToListAsync();
             }

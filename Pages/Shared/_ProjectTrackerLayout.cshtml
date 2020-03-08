@@ -21,7 +21,7 @@
                         <li class="nav-item mr-2">
                             <a class="btn btn-info nav-link" 
                                 asp-page="/ProjectTracker/MyProjects">
-                                <img src="~/resources/analytics.svg" alt="Project tracker" style="width: 32px; height: 32px">
+                                <img src="~/resources/projectIcon.svg" alt="Project tracker" style="width: 32px; height: 32px">
                             </a>
                         </li>         
                         @if(Model.getLoggedInUserName() == "RoshanJM"){
@@ -34,7 +34,7 @@
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container-fluid">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

@@ -1,0 +1,78 @@
+@page
+@model PortfolioPage.Pages_ProjectTracker_Component.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.projectComponent[0].parentComponentID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.projectComponent[0].title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.projectComponent[0].componentDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.projectComponent[0].componentType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.projectComponent[0].nodeDepth)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.projectComponent[0].startDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.projectComponent[0].completionDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.projectComponent[0].completionDeadline)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.projectComponent) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.parentComponentID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.componentDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.componentType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.nodeDepth)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.startDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.completionDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.completionDeadline)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

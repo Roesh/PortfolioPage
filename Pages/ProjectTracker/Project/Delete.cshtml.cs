@@ -9,12 +9,12 @@ using PortfolioPage.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using PortfolioPage.Models;
+using PortfolioPage.Pages.ProjectTracker.Component;
 
 namespace PortfolioPage.Pages.ProjectTracker.Project
 {
     public class DeleteModel : DI_BasePageModel
     {
-        private readonly PortfolioPage.Data.ApplicationDbContext _context;
 
         public DeleteModel(
             ApplicationDbContext context,
@@ -22,7 +22,6 @@ namespace PortfolioPage.Pages.ProjectTracker.Project
             UserManager<IdentityUser> userManager)
             : base(context, authorizationService, userManager)
         {
-            _context = context;
         }
 
         [BindProperty]
@@ -30,7 +29,7 @@ namespace PortfolioPage.Pages.ProjectTracker.Project
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            project = await _context.project.FirstOrDefaultAsync(m => m.ID == id);
+            project = await Context.project.FirstOrDefaultAsync(m => m.ID == id);
 
             if (project == null)
             {
@@ -50,7 +49,7 @@ namespace PortfolioPage.Pages.ProjectTracker.Project
                 return NotFound();
             }
 
-            project = await _context.project.FindAsync(id);
+            project = await Context.project.FindAsync(id);
             
             if (project == null){
                 return NotFound();
@@ -59,9 +58,18 @@ namespace PortfolioPage.Pages.ProjectTracker.Project
             if(project.creatingUserID != getLoggedInUserId()){
                 return Forbid();
             }
-        
-            _context.project.Remove(project);
-            await _context.SaveChangesAsync();    
+
+            Context.project.Remove(project);
+            var firstLevelComponents = (from pc in Context.projectComponent 
+                                        where pc.projectID == project.ID && pc.nodeDepth == 0
+                                        select pc).ToList();
+
+            foreach(var component in firstLevelComponents){
+                var dm = new Component.DeleteModel(Context,AuthorizationService,UserManager);
+                Context.Remove(component);
+                dm.deleteChildComponents(component,Context);
+            }
+            await Context.SaveChangesAsync();
 
             return RedirectToPage("/ProjectTracker/MyProjects");
         }

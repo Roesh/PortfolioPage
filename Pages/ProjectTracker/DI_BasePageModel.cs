@@ -4,19 +4,26 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace PortfolioPage.Pages.ProjectTracker
 {
+    /* Base class for ProjectTracker pages (project, project Component, project updates, project issues) */
     public class DI_BasePageModel : PageModel
     {
         protected ApplicationDbContext Context { get; }
         protected IAuthorizationService AuthorizationService { get; }
         protected UserManager<IdentityUser> UserManager { get; }
 
+        
         public IList<project> projectList { get; set; }
         // Used to temporarily store projects and be referenced by partial views
         public project currentProject {get; set; } 
+        public projectComponent currentComponent {get; set; }
+        public IList<projectComponent> childrenComponents { get; set; }
+        public projectComponent parentComponent { get; set; }
 
         public DI_BasePageModel(
             ApplicationDbContext context,
@@ -38,9 +45,12 @@ namespace PortfolioPage.Pages.ProjectTracker
         //TODO; see if this needs to move to the authorization folders somehow              
         // This is probably the correct spot for this though based on the fact that 
         // partial views reference this model for global configuration
+        // This is all or none
         public bool viewingUserCanEdit = false;
         public bool viewingUserCanDelete = false;
         public bool viewingUserCanViewDetails = true;
+
+        public string returnUrl;
 
         /*TODO: Write unit tests to test out individual methods. Investigate various methods of unit testing */
         public bool userIdExists(string userID){
@@ -66,5 +76,19 @@ namespace PortfolioPage.Pages.ProjectTracker
                     where u.UserName == userName
                     select u.Id).FirstOrDefault();
         }
+
+        public SelectList projectComponentNameSL { get; set; }
+
+        public void PopulateProjectComponentsDropDownList(ApplicationDbContext _context,
+            int parentProject, int? parentComponent, object selectedProjectComponent = null)
+        {
+            var projectComponentQuery = from pc in _context.projectComponent
+                                    where pc.projectID == parentProject
+                                   select pc;
+
+            projectComponentNameSL = new SelectList(projectComponentQuery.AsNoTracking(),
+                        "projectComponentID", "Title", selectedProjectComponent);
+        }
     }
+    
 }

@@ -28,7 +28,6 @@ namespace PortfolioPage.Pages.ProjectTracker
             : base(context, authorizationService, userManager)
         {
         }
-
         
         public string userName;
         
@@ -37,9 +36,9 @@ namespace PortfolioPage.Pages.ProjectTracker
             string currentUserId = getLoggedInUserId();
             userName = getLoggedInUserName();
             
-            var projects = from c in Context.project
+            var projects = (from c in Context.project
                         where c.creatingUserID == currentUserId
-                        select c;
+                        select c).Include(project => project.components);
 
             projectList = await projects.ToListAsync();
 

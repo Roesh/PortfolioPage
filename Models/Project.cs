@@ -11,7 +11,7 @@ namespace PortfolioPage.Models
         public const int minProjectTitleLength = 3;
         public const int maxDescriptionLength = 5000;        
         public const int minDescriptionLength = 10;
-
+        
     }
 
     public class ProjectEditHelper{

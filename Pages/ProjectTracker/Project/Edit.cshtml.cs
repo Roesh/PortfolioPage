@@ -56,21 +56,22 @@ namespace PortfolioPage.Pages.ProjectTracker.Project
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync(int id)
-        {
-            // Make sure view model is valid first
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-
+        {            
             var project = await Context.project.FindAsync(id);
                         
             if(project == null){
                 return NotFound();
             }
             if(project.creatingUserID != getLoggedInUserId()){
-                return Forbid();
+                return Forbid(); 
             }
+
+            // Make sure view model is valid first
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
             
             // Update project entry with view model values            
             var projectEntry = Context.Attach(project);

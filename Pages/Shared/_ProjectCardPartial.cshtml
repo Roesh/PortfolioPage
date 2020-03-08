@@ -4,8 +4,8 @@
 {
     Model.currentProject = item;
     <!-- master project card row -->
-    <!-- TODO: Implement some way to filter the projects list, perhaps using some personal preferences-->    
-    <div class="col-md-11 card shadow mx-auto my-3 text-dark">
+    @* TODO: Implement some way to filter the projects list, perhaps using some personal preferences *@
+    <div class="col-sm card border border-dark mr-3 my-3 text-dark" style="min-width: 256px;">
         <div class="row">
             <!-- High level details -->
             <div class="col">
@@ -43,11 +43,11 @@
                     </div>              
                 </div>            
                 
-                <!-- Row 4 - Phase information-->
+                <!-- Row 4 - Phase and status information-->
                 <div class="row">
-                    <div class="col-auto mr-auto border-left-0 border-secondary shadow rounded-right">
+                    <div class="col-auto mr-auto border-left-0 border-top border-right border-secondary shadow rounded-right">
 
-                        <div class="row no-gutters">                            
+                        <div class="row no-gutters">
                             <!-- Phase information -->
                             <div class="col-auto text-secondary">
                                 @Html.DisplayNameFor(model =>
@@ -71,7 +71,7 @@
                             }
                             @if(item.currentProjectStatus == project.projectStatus.behind)
                             {
-                            <div class="col-auto text-warning align-self-center px-1">
+                            <div class="col-auto text-warning align-self-center px-1" style="background-color: black">
                                 <i><b>@Html.DisplayFor(modelItem => item.currentProjectStatus)</b></i>
                             </div>
                             }
@@ -88,34 +88,79 @@
             </div>
             <!-- High level actions -->
             <div class="row justify-content-end">
-                <div class="col align-contents-center mr-5">                    
+                <div class="col align-contents-center mr-1">                    
                     <partial name="_ProjectActionsPartial" />   
-                </div>             
+                </div>
             </div>  
         </div>
         <hr>
 
         <!-- Row 5 Description, actions view-->
-        <div class="row mb-2">
-            <div class="col ml-1">
-                <div class="row text-muted">
-                    @{
-                        var description = item.goalDescription;
-                        int descriptionLength = description.Length;
-                        if(descriptionLength > 50){
-                            description = description.Remove(50);
-                        }
+        <div class="row text-muted">
+            <div class="col">
+                @{
+                    var description = item.goalDescription;
+                    int descriptionLength = description.Length;
+                    if(descriptionLength > 50){
+                        description = description.Remove(50);
+                        <text>@HtmlEncoder.Encode(description) ...</text>
+                    }else{
+                        <text>@HtmlEncoder.Encode(description)</text>
                     }
-                    @description ...
-                </div>
-                <div class="row text-info">
-                    Components link and summary
-                </div>
-                <div class="row text-info">
-                    Issues link and summary
-                </div>                    
+                }
             </div>
-        </div>     
+        </div> 
+
+        <!-- Row 6 Component Summary -->
+        <div class="row mt-1 text-info">
+            <div class="col no-gutters">
+            @{
+                int totalComponents;
+                int numComponentsBehind;
+                totalComponents = (from c in item.components
+                                    select c).Count();
+                numComponentsBehind = (from c in item.components
+                                    where c.componentStatus == projectComponent.componentStatusEnum.Behind
+                                    select c).Count();
+                // TODO: Check if exposing project ID is a security flaw. Unlikely, but confirm
+                string ComponentCreationString = "/ProjectTracker/Component/Create?parentProject=" + @item.ID.ToString();
+                string ComponentDetailsString = "/ProjectTracker/Component/Details?parentProject=" + @item.ID.ToString();
+
+                
+                    //Display data // TODO: Component summary on hover*@
+                    if(totalComponents == 1){
+                        @totalComponents <text>&nbsp;Component.&nbsp;</text>
+                    }
+                    if(totalComponents > 1){
+                        @totalComponents <text>&nbsp;Components.&nbsp;</text>
+                    }
+                    <b>
+                        @if(numComponentsBehind == 1){
+                            @numComponentsBehind <text>&nbsp;component behind.&nbsp;</text>
+                        }
+                        @if(numComponentsBehind > 1){
+                            @numComponentsBehind <text>&nbsp;components behind.&nbsp;</text>
+                        }
+                    </b>
+                <a class="border border-right-0 shadow-sm px-2 py-1 text-info"
+                href="@(ComponentDetailsString)"
+                style="text-decoration: none !important; width: 6rem; min-width: 6rem">
+                    Details
+                </a>
+                <a class="border rounded-right shadow-sm px-2 py-1 text-info"
+                href="@(ComponentCreationString)"
+                style="text-decoration: none !important;width: 12rem; min-width: 12rem">
+                    Add Component
+                </a>          
+            }
+            </div>
+        </div>
+
+        <div class="row mt-2 text-info">
+            <div class="col">
+                Issues link and summary
+            </div>
+        </div> 
     </div>
-    
+        
 }

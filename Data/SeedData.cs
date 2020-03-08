@@ -103,13 +103,13 @@ namespace PortfolioPage.Data
                     title = "Research the Agile framework",
                     creatingUserID = creatingUserID,
                     creationDate = DateTime.Now,
-                    componentDescription = "See if we can incorporate elements of this framework into the app's functionality",
+                    componentDescription = "See if we can incorporate elements of Agile into the app's functionality",
                     startDate = DateTime.Parse("2020-3-16"),
                     completionDeadline = DateTime.Parse("2020-4-10"),
                     componentType = projectComponent.componentTypeEnum.Research,
                     componentStatus = projectComponent.componentStatusEnum.OnTrack, 
                     nodeDepth = 1,
-                    parentComponentID = 1,
+                    projectComponentID = 1,
                     projectID = 1
                 },
                 new projectComponent{
@@ -121,9 +121,9 @@ namespace PortfolioPage.Data
                     startDate = DateTime.Parse("2020-3-16"),
                     completionDeadline = DateTime.Parse("2020-4-10"),
                     componentType = projectComponent.componentTypeEnum.Research,
-                    componentStatus = projectComponent.componentStatusEnum.OnTrack, 
+                    componentStatus = projectComponent.componentStatusEnum.OnHold, 
                     nodeDepth = 1,
-                    parentComponentID = 1,
+                    projectComponentID = 1,
                     projectID = 1
                 }
                 );

@@ -14,7 +14,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.projectComponent[0].parentComponentID)
+                @Html.DisplayNameFor(model => model.projectComponent[0].projectComponentID)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.projectComponent[0].title)
@@ -44,7 +44,7 @@
 @foreach (var item in Model.projectComponent) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.parentComponentID)
+                @Html.DisplayFor(modelItem => item.projectComponentID)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.title)

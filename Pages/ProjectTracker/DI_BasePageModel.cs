@@ -17,13 +17,19 @@ namespace PortfolioPage.Pages.ProjectTracker
         protected IAuthorizationService AuthorizationService { get; }
         protected UserManager<IdentityUser> UserManager { get; }
 
+        public string maxCardWidth { get; set; }
+        public string minCardWidth { get; set; }
+        public string row5_ComponentSummary {get; set; }
+        public string row7_DescriptionView {get; set; }
         
         public IList<project> projectList { get; set; }
         // Used to temporarily store projects and be referenced by partial views
         public project currentProject {get; set; } 
+
+        public bool parentComponentCardDisplayed = false;
+        public projectComponent parentComponent;
         public projectComponent currentComponent {get; set; }
-        public IList<projectComponent> childrenComponents { get; set; }
-        public projectComponent parentComponent { get; set; }
+        public IList<projectComponent> componentList { get; set; }
 
         public DI_BasePageModel(
             ApplicationDbContext context,
@@ -33,6 +39,11 @@ namespace PortfolioPage.Pages.ProjectTracker
             Context = context;
             UserManager = userManager;
             AuthorizationService = authorizationService;
+            minCardWidth = "256px";
+            maxCardWidth = "50rem";
+
+            row5_ComponentSummary = "row mt-2 text-info border-bottom border-top";            
+
         }        
 
         public string getLoggedInUserName(){

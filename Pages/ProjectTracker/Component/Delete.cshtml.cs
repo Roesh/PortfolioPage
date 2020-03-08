@@ -83,7 +83,7 @@ namespace PortfolioPage.Pages.ProjectTracker.Component
         }
         private IEnumerable<projectComponent> getChildren(projectComponent projectComponent){
             return (from pc in Context.projectComponent 
-                    where pc.parentComponentID == projectComponent.ID
+                    where pc.projectComponentID == projectComponent.ID
                     select pc).ToList();
         }
     }

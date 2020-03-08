@@ -15,7 +15,9 @@ namespace PortfolioPage.Models
         }
 
         public enum componentStatusEnum{
+            [Display(Name="On Hold")]
             OnHold,
+            [Display(Name="On Track")]
             OnTrack,
             Behind,
             Complete
@@ -32,7 +34,8 @@ namespace PortfolioPage.Models
         [Required]
         public string creatingUserID {get; set;}
                 
-        public int? parentComponentID {get; set;}
+        [DisplayName("Parent Component")]
+        public int? projectComponentID {get; set;}
 
         [Required]
         [DataType(DataType.Date)]
@@ -85,6 +88,8 @@ namespace PortfolioPage.Models
         [DisplayName("Component's associated updates")]
         public ICollection<projectUpdate> linkedProjectUpdates { get; set; }
 
+        [DisplayName("Component's children")]
+        public ICollection<projectComponent> childComponents {get; set;}
         
     }
 
@@ -99,7 +104,9 @@ namespace PortfolioPage.Models
         [DisplayName("Component goal description")]
         [StringLength(magicNumbers.maxDescriptionLength, MinimumLength = magicNumbers.minDescriptionLength,  ErrorMessage = "{0} length must be between {2} and {1}.")]
         public string componentDescription { get; set;}
-        public int? parentComponentID {get; set;}
+
+        [DisplayName("Parent Component")]
+        public int? projectComponentID {get; set;}
 
         [Required]
         [DisplayName("Component Type")]        

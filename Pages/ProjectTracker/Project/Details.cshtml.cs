@@ -29,6 +29,8 @@ namespace PortfolioPage.Pages.ProjectTracker.Project
         public async Task<IActionResult> OnGetAsync(int id)
         {
             Project = await Context.project.FirstOrDefaultAsync(m => m.ID == id);
+            projectList = new List<project>();
+            projectList.Add(Project);
 
             if (Project == null)
             {
@@ -36,12 +38,20 @@ namespace PortfolioPage.Pages.ProjectTracker.Project
             }
 
             var isPublic = Project.isPublic;
-
             if (!isPublic)
             {
                 return Forbid();
             }
+            
+            componentList = (from pc in Context.projectComponent
+                                where pc.projectID == id && pc.nodeDepth == 0
+                                select pc).Include(pc => pc.childComponents).ToList();
 
+            // AUTHORIZATION
+            if(componentList.FirstOrDefault().creatingUserID == getLoggedInUserId()){
+                viewingUserCanDelete = true;
+                viewingUserCanEdit = true;
+            }
             return Page();
         }
     }

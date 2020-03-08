@@ -26,15 +26,20 @@ namespace PortfolioPage.Pages.ProjectTracker.Component
 
         public int parentProjectID;
         public int? parentComponentID;
-        public async Task<IActionResult> OnGetAsync(int parentProject, int? parentComponent)
+        public async Task<IActionResult> OnGetAsync(int parentProjectID, int? parentComponentID)
         {
-            parentProjectID = parentProject;
-            this.parentComponentID = parentComponent;
+            this.parentProjectID = parentProjectID;
+            this.parentComponentID = parentComponentID;
 
-            currentProject = await Context.project.FindAsync(parentProject);
+            currentProject = await Context.project.FindAsync(parentProjectID);
+            
+            // AUTHORIZATION
+            if(currentProject.creatingUserID != getLoggedInUserId()){
+                return Forbid();
+            }
 
-            if(parentComponent != null){
-                currentComponent = await Context.projectComponent.FindAsync(parentComponent);                
+            if(parentComponentID != null){
+                currentComponent = await Context.projectComponent.FindAsync(parentComponentID);                
                 if(currentComponent == null){
                     return NotFound(new ArgumentException("Parent component ID argument not found"));
                 }
@@ -52,10 +57,17 @@ namespace PortfolioPage.Pages.ProjectTracker.Component
 
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync(int parentProject, int? parentComponent)
+        public async Task<IActionResult> OnPostAsync(int parentProjectID, int? parentComponentID)
         {
-            var project = await Context.project.FindAsync(parentProject);
-                        
+            projectComponent parentComponent = null;
+            if(parentComponentID != null){
+                parentComponent = await Context.projectComponent.FindAsync(parentComponentID);
+                if(parentComponent == null){
+                    return NotFound();
+                }
+            }
+
+            var project = await Context.project.FindAsync(parentProjectID);     
             if(project == null){
                 return NotFound();
             }
@@ -63,6 +75,8 @@ namespace PortfolioPage.Pages.ProjectTracker.Component
                 return Forbid();
             }            
             
+            projectComponentVM.projectComponentID = parentComponentID;
+
             if (!ModelState.IsValid)
             {
                 return Page();
@@ -74,13 +88,14 @@ namespace PortfolioPage.Pages.ProjectTracker.Component
             
             // Items to be set automatically: Creation user, creation date, parent project Id, based on the url passed in.
             {
-                projectComponentEntry.Entity.projectID = parentProject;
+                projectComponentEntry.Entity.projectID = parentProjectID;
                 projectComponentEntry.Entity.creatingUserID = getLoggedInUserId();
                 projectComponentEntry.Entity.creationDate = DateTime.Now;
-                if(projectComponentVM.parentComponentID == null){
+                if(parentComponentID == null){
                     projectComponentEntry.Entity.nodeDepth = 0;
                 }else{
-                    projectComponentEntry.Entity.nodeDepth = (int)projectComponentVM.parentComponentID + 1;
+                    projectComponentEntry.Entity.nodeDepth = parentComponent.nodeDepth + 1;
+                    projectComponentEntry.Entity.projectComponentID = parentComponentID;
                 }                
             }
             ModelState.Clear();

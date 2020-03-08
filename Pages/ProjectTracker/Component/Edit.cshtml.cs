@@ -91,7 +91,7 @@ namespace PortfolioPage.Pages_ProjectTracker_Component
             projectComponentVM.componentDescription = projectComponent.componentDescription;
             projectComponentVM.componentStatus = projectComponent.componentStatus;
             projectComponentVM.componentType = projectComponent.componentType;
-            projectComponentVM.parentComponentID = projectComponent.parentComponentID;
+            projectComponentVM.projectComponentID = projectComponent.projectComponentID;
             projectComponentVM.startDate = projectComponent.startDate;
             projectComponentVM.title = projectComponent.title;         
             return projectComponentVM;

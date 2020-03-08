@@ -60,6 +60,9 @@ Models/Project.cs contains the model for the project.
 3_6_2020 - See 3_6_2020.txt on the server.
 3_7_2020 - Project component create and edit actions complete. For the delete action, we need to decide what to happen to the child components. Currently defaulting to 
 deleting the child components as well.
+Project components are basically done. I've created a details view for them which looks similar to the projects view. There is a lot of similarity across the project and project components and I am wondering
+if the gang of four can help here.
+3_8_2020 - I'm thinking the best way to simplify functionality across the pages will be to implement generic get and post methods in the base DI_BasePAgeModel class and extend or override it as necessary
 
 2) Project operations:
 Pages/Project/* hold the CRUD operations needed.
@@ -68,7 +71,7 @@ Pages/Project/* hold the CRUD operations needed.
 Models/ProjectComponent.cs contains the model for the project.
     a) This current iteration of the "project component" is left as general as possible.
     It will contain all of the columns that a project has, including begin date, completion deadline, and component goal. that make sense
-4) 
+
 
 === Items specifically not implemented for this project deliverable, but nice to have in the future:
 

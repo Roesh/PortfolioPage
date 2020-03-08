@@ -7,78 +7,21 @@
 
 <div class="container-lg">
     <div class="row">
-        <div class="col card grad-bg-1">
-            <p class="col h4 my-4">
-                @Html.DisplayFor(model => model.Project.title)
-            </p>
+        <div class="col card grad-bg-1">                
+            <div class="row justify-content-center">
+                <!-- Cards view start -->
+                <partial name="_ProjectCardPartial" />
+            </div>
         </div>                    
     </div>
     <hr>
+</div>
 
-    <div>
-        <dl class="row">            
-            <div class="col" id="descriptionCollapse">
-                <div>
-                    <div id="description">
-                    <h2 class="mb-0">
-                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                            @Html.DisplayNameFor(model => model.Project.goalDescription)
-                        </button>
-                    </h2>
-                    </div>
-
-                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#descriptionCollapse">
-                    <div class="card-body">
-                        @Html.DisplayFor(model => model.Project.goalDescription)
-                    </div>
-                    </div>
-                </div>
-            </div>
-            @*
-            <dt class="col-sm-2">
-                
-            </dt>
-            <dd class="col-sm-10">
-                
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Project.startDate)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Project.startDate)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Project.completionDate)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Project.completionDate)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Project.completionDeadline)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Project.completionDeadline)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Project.currentProjectStatus)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Project.currentProjectStatus)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Project.currentProjectPhase)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Project.currentProjectPhase)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Project.isPublic)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Project.isPublic)
-            </dd>*@
-        </dl>
-        
+<div class="row">
+    <div class="col card grad-bg-2">
+        <div class="row mx-2 justify-content-center">
+            <!-- Cards view start -->
+            <partial name="_ProjectComponentCardPartial" />
+        </div>
     </div>
-    
 </div>

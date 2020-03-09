@@ -101,13 +101,15 @@
                 @{
                     int totalComponents = 0;
                     int numComponentsBehind = 0;
-                    totalComponents = (from c in item.components
-                                        where c.nodeDepth == 0
-                                        select c).Count();
-                    numComponentsBehind = (from c in item.components
-                                            where c.nodeDepth == 0 
-                                            && c.componentStatus == projectComponent.componentStatusEnum.Behind
+                    if(item.components != null){
+                        totalComponents = (from c in item.components
+                                            where c.nodeDepth == 0
                                             select c).Count();
+                        numComponentsBehind = (from c in item.components
+                                                where c.nodeDepth == 0 
+                                                && c.componentStatus == projectComponent.componentStatusEnum.Behind
+                                                select c).Count();
+                    }
                     // TODO: Check if exposing project ID is a security flaw. Unlikely, but confirm
                     string ComponentCreationString = "/ProjectTracker/Component/Create?parentProjectID=" + @item.ID.ToString();
                     

@@ -17,11 +17,13 @@
     <hr>
 </div>
 
-<div class="row">
-    <div class="col card grad-bg-2">
-        <div class="row mx-2 justify-content-center">
-            <!-- Cards view start -->
-            <partial name="_ProjectComponentCardPartial" />
+@if(!(!Model.componentList?.Any() ?? false)){
+    <div class="row">
+        <div class="col card grad-bg-2">
+            <div class="row mx-2 justify-content-center">
+                <!-- Cards view start -->
+                <partial name="_ProjectComponentCardPartial" />
+            </div>
         </div>
     </div>
-</div>
+}

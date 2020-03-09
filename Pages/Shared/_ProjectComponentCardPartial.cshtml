@@ -152,30 +152,33 @@
             <!-- Row 7 Description view-->
             <div class="row">
                 <div class="col no-gutters text-center" id="descriptionCollapse">
-                    <div id="description">
-                        @{
-                            var dataTarget = "PRJ_ID_" + item.ID;
-                            var dataTargetRef = "#" + dataTarget;
-                        }
-                        <button class="btn btn-muted no-gutters" type="button" data-toggle="collapse" data-target="@dataTargetRef" aria-expanded="false" aria-controls="collapseOne">
-                            @{
-                                var description = item.componentDescription;
-                                int descriptionLength = description.Length;
-                                if(descriptionLength > 50){
-                                    <text>@HtmlEncoder.Encode(description.Remove(50)) ...</text>
-                                    <i class="text-primary">(Expand)</i>
-                                }else{
-                                    <text>@HtmlEncoder.Encode(description)</text>
+                    @{
+                        string description = item.componentDescription;
+                        int descriptionLength = description.Length;
+                        string dataTarget = "PRJ_ID_" + item.ID;
+                        string dataTargetRef = "#" + dataTarget;
+                        <div id="description">                            
+                                @{
+                                    if(descriptionLength > 50){
+                                        <button class="btn btn-muted" type="button" data-toggle="collapse" data-target="@dataTargetRef" aria-expanded="false" aria-controls="collapseOne">
+                                            <text>@HtmlEncoder.Encode(description.Remove(50)) ...</text>
+                                            <i class="text-primary">(Expand)</i>
+                                        </button>
+                                    }else{
+                                        <div class="my-1">
+                                            <text>@HtmlEncoder.Encode(description)</text>
+                                        </div>
+                                    }
                                 }
-                            }
-                        </button>
-                    </div>
-
-                    <div id="@dataTarget" class="collapse" aria-labelledby="headingOne" data-parent="#descriptionCollapse">
-                        <div class="card-body">
-                            @Html.DisplayFor(item => item.currentProject.goalDescription)                                
                         </div>
-                    </div>  
+                        if(descriptionLength > 50){
+                            <div id="@dataTarget" class="collapse" aria-labelledby="headingOne" data-parent="#descriptionCollapse">
+                                <div class="card-body">
+                                    @HtmlEncoder.Encode(item.componentDescription)
+                                </div>
+                            </div>  
+                        }
+                    }
                 </div>
             </div>
         </div>

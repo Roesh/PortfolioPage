@@ -123,6 +123,8 @@ namespace PortfolioPage.Models
         [Description("Controls whether this project can be viewed by the public")]
         [DisplayName("Can the general public see this project's details?")]
         public bool isPublic{get; set;}
+
+        public ICollection<projectUpdate> projectUpdates {get; set;}
     }
 
     public class projectViewModel

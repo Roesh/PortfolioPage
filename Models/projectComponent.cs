@@ -84,12 +84,12 @@ namespace PortfolioPage.Models
 
         [DisplayName("Completion deadline history")]
         public ICollection<projectComponentCompletionDeadlineHistory> componentDeadlineHistory { get; set; }
-        
-        [DisplayName("Component's associated updates")]
-        public ICollection<projectUpdate> linkedProjectUpdates { get; set; }
 
         [DisplayName("Component's children")]
         public ICollection<projectComponent> childComponents {get; set;}
+
+        [DisplayName("Component's associated updates")]
+        public ICollection<projectUpdate> projectUpdates {get; set;}
         
     }
 

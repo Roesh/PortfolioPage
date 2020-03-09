@@ -64,6 +64,8 @@ Project components are basically done. I've created a details view for them whic
 if the gang of four can help here.
 3_8_2020 - I'm thinking the best way to simplify functionality across the pages will be to implement generic get and post methods in the base DI_BasePAgeModel class and extend or override it as necessary
 
+3_9_2020 - Time to work on updates and issues this week.
+
 2) Project operations:
 Pages/Project/* hold the CRUD operations needed.
 

@@ -48,7 +48,7 @@ namespace PortfolioPage.Pages.ProjectTracker.Project
                                 select pc).Include(pc => pc.childComponents).ToList();
 
             // AUTHORIZATION
-            if(componentList.FirstOrDefault().creatingUserID == getLoggedInUserId()){
+            if(componentList.FirstOrDefault()?.creatingUserID == getLoggedInUserId()){
                 viewingUserCanDelete = true;
                 viewingUserCanEdit = true;
             }

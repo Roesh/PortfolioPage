@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PortfolioPage.Models;
 
@@ -18,10 +18,8 @@ namespace PortfolioPage.Data
         public DbSet<projectComponent> projectComponent { get; set; }
         public DbSet<projectComponentCompletionDeadlineHistory> projectComponentCompletionDeadlineHx { get; set; }
         public DbSet<projectUpdate> projectUpdate { get; set; }
-        public DbSet<projectUpdateEditHistory> projectUpdateEditHistory { get; set; }
+        public DbSet<projectUpdateEditHistory> projectUpdateEditHistory { get; set; }        
         
-        
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -35,6 +33,7 @@ namespace PortfolioPage.Data
             modelBuilder.Entity<projectUpdate>().ToTable("Project Update");
             modelBuilder.Entity<projectUpdateEditHistory>().ToTable("Project Update Edit Hx");
         }
+        
     }
     
 }

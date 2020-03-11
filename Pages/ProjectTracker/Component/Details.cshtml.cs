@@ -42,7 +42,11 @@ namespace PortfolioPage.Pages.ProjectTracker.Component
             parentComponent = projectComponent;
             componentList = (from pc in Context.projectComponent
                             where pc.projectComponentID == projectComponent.ID
-                            select pc).Include(pc => pc.childComponents).ToList();
+                            select pc)
+                            .Include(pc => pc.childComponents)
+                            .Include(pc => pc.projectUpdates)
+                            .ToList();
+                            
             currentProject = await Context.project.FirstOrDefaultAsync(m => m.ID == projectComponent.projectID);
             //AUTHORIZATION
             bool loginUserIsComponentOwner = (projectComponent.creatingUserID == getLoggedInUserId());

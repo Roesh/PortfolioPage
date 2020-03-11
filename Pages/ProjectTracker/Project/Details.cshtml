@@ -9,8 +9,15 @@
     <div class="row">
         <div class="col card grad-bg-1">                
             <div class="row justify-content-center">
+                @{
+                    Model.addedHeader = new List<string>();
+                    Model.addedHeader.Add("Project Summary");
+                }
                 <!-- Cards view start -->
                 <partial name="_ProjectCardPartial" />
+                @{
+                    Model.addedHeader.Clear();
+                }
             </div>
         </div>                    
     </div>

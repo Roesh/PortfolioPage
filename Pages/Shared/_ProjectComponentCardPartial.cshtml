@@ -1,6 +1,11 @@
 @model PortfolioPage.Pages.ProjectTracker.DI_BasePageModel
 
-@if(Model.parentComponentCardDisplayed == false && Model.parentComponent != null){
+@if(Model.displaySingleComponent){
+    await RenderComponentCard(Model.currentComponent, Model.minCardWidth, Model.maxCardWidth);
+    return; 
+}
+
+@if(Model.parentComponent != null && Model.parentComponentCardDisplayed == false){
     await RenderComponentCard(Model.parentComponent, Model.minCardWidth, Model.maxCardWidth);
     Model.parentComponentCardDisplayed = true;
     return; 
@@ -12,10 +17,22 @@
 @{
     async Task RenderComponentCard(projectComponent item, string cardMinWidth, string cardMaxWidth){
         Model.currentComponent = item;
+        
         <!-- master project card row -->
         @* TODO: Implement some way to filter the project components list, perhaps using some personal preferences 
         May want to default sort by components that are behind or sort by completion date*@
-        <div class="col-sm card border border-dark mr-5 my-3 text-dark" style="min-width: @cardMinWidth; max-width: @cardMaxWidth">
+        <div class="col-sm card border border-dark mx-2 my-3 text-dark" style="min-width: @cardMinWidth; max-width: @cardMaxWidth">
+           <!-- Optional header -->            
+            @if(Model.addedHeader != null && Model.addedHeader.Count > 0){
+                <div class="row justify-content-center text-center border-bottom btn-dark text-white">
+                    @foreach (var subitem in Model.addedHeader)
+                    {
+                        <div class="col h4">
+                            @subitem
+                        </div>
+                    }
+                </div>
+            }
             <!-- Rows 1-4, High level details and actions -->
             <div class="row">
                 <div class="col">
@@ -35,8 +52,11 @@
                             }
                             else
                             {
-                                <i>@Html.DisplayNameFor(model => model.projectList[0].completionDeadline):&nbsp;
-                                @Html.DisplayFor(model => item.completionDeadline)</i>                                              
+                                var daysLeft = (item.completionDeadline - DateTime.Now).Days;
+                                <i>Due on:&nbsp;
+                                @Html.DisplayFor(model => item.completionDeadline)
+                                <text>&nbsp;(</text>@daysLeft
+                                <text>&nbsp;days)</text></i>                                                                            
                             }
                         </div>              
                     </div>            
@@ -124,13 +144,18 @@
                             //Display data // TODO: Component summary on hover*@
                             // TODO: Link to component summary
                             if(totalComponents > 0){
-                                <button type="button" class="btn btn-primary">
+                                <button type="button" class="btn btn-primary"
+                                    asp-page="/ProjectTracker/Component/Details"
+                                    asp-route-id="@item.ID">
                                     <span class="badge badge-light">@totalComponents</span> Components
                                     <span class="sr-only">total components</span>
                                 </button>   
                             }
                             @if(numComponentsOnHold > 0){
-                                <button type="button" class="btn btn-secondary">
+                                <button type="button" class="btn btn-secondary"
+                                    asp-page="/ProjectTracker/Component/Details"
+                                    asp-route-id="@item.ID"
+                                    asp-route-filter="onHold">
                                     On hold <span class="badge badge-light">@numComponentsOnHold</span>
                                     <span class="sr-only">components on hold</span>
                                 </button>
@@ -168,11 +193,16 @@
                     <a class="badge badge-pill badge-info px-2 py-2" href="#">Add issue</a>   
                 </div>
                 <div class="col">
-                    <button type="button" class="btn btn-primary mb-1">
-                        Updates <span class="badge badge-light">
-                        </span>
-                        <span class="sr-only">project component's updates</span>                        
-                    </button> 
+                    
+                    @if(item.projectUpdates != null && !(!item.projectUpdates?.Any() ?? false)){
+                        <a type="button" class="btn btn-primary mb-1"
+                            asp-page="/ProjectTracker/Update/Details"
+                            asp-route-ComponentID="@item.ID">
+                            Updates <span class="badge badge-light">@item.projectUpdates.Count()
+                            </span>
+                            <span class="sr-only">project's updates</span>
+                        </a> 
+                    }
                     <a class="badge badge-pill badge-info px-2 py-2" 
                     asp-page="/ProjectTracker/Update/Create"
                     asp-route-ComponentID="@item.ID">Add update</a>
@@ -185,28 +215,25 @@
                     @{
                         string description = item.componentDescription;
                         int descriptionLength = description.Length;
-                        string dataTarget = "PRJ_ID_" + item.ID;
+                        string dataTarget = "PRJ_CMP_ID_" + item.ID;
                         string dataTargetRef = "#" + dataTarget;
-                        <div id="description">                            
-                            @{
-                                if(descriptionLength > 50){
-                                    <button class="btn btn-muted" type="button" data-toggle="collapse" data-target="@dataTargetRef" aria-expanded="false" aria-controls="collapseOne">
-                                        <text>@HtmlEncoder.Encode(description.Remove(50)) ...</text>
-                                        <i class="text-primary">(Expand)</i>
-                                    </button>
-                                }else{
-                                    <div class="my-1">
-                                        <text>@HtmlEncoder.Encode(description)</text>
-                                    </div>
-                                }
-                            }
-                        </div>
+
+                        <span class="text-secondary">Description: </span>                        
                         if(descriptionLength > 50){
-                            <div id="@dataTarget" class="collapse" aria-labelledby="headingOne" data-parent="#descriptionCollapse">
-                                <div class="card-body">
-                                    @HtmlEncoder.Encode(item.componentDescription)
-                                </div>
-                            </div>  
+                            <text>@description.Remove(50) ...</text>
+                            <button class="btn btn-muted no-gutters" type="button" data-toggle="collapse" data-target="@dataTargetRef" aria-expanded="false" aria-controls="collapseOne">
+                            <i class="text-primary">(Expand)</i>
+                            </button>
+                        }else{
+                            <span class="my-1">@description</span>
+                        }
+
+                        if(descriptionLength > 50){
+                        <div id="@dataTarget" class="collapse" aria-labelledby="headingOne" data-parent="#descriptionCollapse">
+                            <div class="card-body">
+                                @description
+                            </div>
+                        </div>  
                         }
                     }
                 </div>

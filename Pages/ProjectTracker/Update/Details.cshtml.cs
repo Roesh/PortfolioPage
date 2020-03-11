@@ -25,23 +25,51 @@ namespace PortfolioPage.Pages.ProjectTracker.Update
 
         public projectUpdateViewModel projectUpdateViewModel { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int? ProjectID, int? ComponentID)
         {
-
-            var projectUpdate = await Context.projectUpdate.FirstOrDefaultAsync(m => m.ID == id);
-
-            if (projectUpdate == null)
+            
             {
-                return NotFound();
-            }
-            if(projectUpdate.creatingUserID != getLoggedInUserId()){
-                return Forbid();
-            }
-            {
-                projectUpdateViewModel.projectUpdateType = projectUpdate.projectUpdateType;
-                projectUpdateViewModel.updateText = projectUpdate.updateText ;
-                projectUpdateViewModel.updateTitle= projectUpdate.updateTitle;
-            }
+                bool projectIDProvided = (ProjectID != null);
+                bool componentIDProvided = (ComponentID != null);
+
+                if(!projectIDProvided && !componentIDProvided){
+                    return NotFound(new String("ProjectID or ComponentID parameters required to create a project update"));
+                }
+
+                var updateListQuery = (from pu in Context.projectUpdate                                 
+                                        select pu);
+
+                if(componentIDProvided){
+                    currentComponent = await Context.projectComponent.FindAsync(ComponentID);
+                    if(currentComponent == null){
+                        return NotFound(new String("Parent component ID argument not found"));
+                    }
+                    // AUTHORIZATION
+                    if(currentComponent.creatingUserID != getLoggedInUserId()){
+                        return Forbid();                        
+                    }                    
+                    currentProject = await Context.project.FindAsync(currentComponent.projectID);
+                    
+                    updateList = updateListQuery.Where(pu => pu.projectComponentID == currentComponent.ID)
+                                    .ToList();;
+                                    
+                }
+                
+                else if(projectIDProvided){
+                    currentProject = await Context.project.FindAsync(ProjectID);
+                    if(currentProject == null){
+                        return NotFound(new String("Parent component ID argument not found"));
+                    }
+                    // AUTHORIZATION
+                    if(currentProject.creatingUserID != getLoggedInUserId()){
+                        return Forbid();
+                    }
+
+                    updateList = updateListQuery.Where(pu => pu.projectID == currentProject.ID)
+                                    .ToList();
+                }
+            }            
+            viewingUserCanDelete = viewingUserCanEdit = true;
             return Page();
         }
     }

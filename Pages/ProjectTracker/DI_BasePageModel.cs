@@ -22,16 +22,21 @@ namespace PortfolioPage.Pages.ProjectTracker
         public string row5_ComponentSummary {get; set; }
         public string row6_IssueAndUpdateSummary {get; set; }
         public string row7_DescriptionView {get; set; }
-        
+
+        public IList<string> addedHeader { get; set; }
         public IList<project> projectList { get; set; }
         // Used to temporarily store projects and be referenced by partial views
         public project currentProject {get; set; } 
 
         public bool parentComponentCardDisplayed = false;
         public bool displaySingleProject = false;
+        public bool displaySingleComponent = false;
         public projectComponent parentComponent;
         public projectComponent currentComponent {get; set; }
         public IList<projectComponent> componentList { get; set; }
+
+        public IList<projectUpdate> updateList {get; set; }
+        public projectUpdate currentUpdate {get; set; }
 
         public DI_BasePageModel(
             ApplicationDbContext context,

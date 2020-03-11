@@ -34,9 +34,9 @@ namespace PortfolioPage.Pages.ProjectTracker.Update
         [BindProperty]
         public projectUpdateViewModel projectUpdateVM { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int projectUpdateID)
+        public async Task<IActionResult> OnGetAsync(int id)
         {       
-            var projectUpdate = await Context.projectUpdate.FirstOrDefaultAsync(m => m.ID == projectUpdateID);
+            var projectUpdate = await Context.projectUpdate.FirstOrDefaultAsync(m => m.ID == id);
             if(projectUpdate == null){
                 return NotFound();
             }
@@ -55,12 +55,12 @@ namespace PortfolioPage.Pages.ProjectTracker.Update
 
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync(int? projectUpdateID)
+        public async Task<IActionResult> OnPostAsync(int? id)
         {
-            if(projectUpdateID == null){
+            if(id == null){
                 return NotFound();
             }
-            var projectUpdate = await Context.projectUpdate.FirstOrDefaultAsync(m => m.ID == projectUpdateID);
+            var projectUpdate = await Context.projectUpdate.FirstOrDefaultAsync(m => m.ID == id);
 
             if(projectUpdate == null){
                 return NotFound();

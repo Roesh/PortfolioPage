@@ -38,14 +38,17 @@ namespace PortfolioPage.Pages.ProjectTracker.Project
             }
 
             var isPublic = Project.isPublic;
-            if (!isPublic)
+            if (!isPublic && Project.creatingUserID != getLoggedInUserId())
             {
                 return Forbid();
             }
             
             componentList = (from pc in Context.projectComponent
                                 where pc.projectID == id && pc.nodeDepth == 0
-                                select pc).Include(pc => pc.childComponents).ToList();
+                                select pc)
+                                .Include(pc => pc.childComponents)
+                                .Include(pc => pc.projectUpdates)
+                                .ToList();
 
             // AUTHORIZATION
             if(componentList.FirstOrDefault()?.creatingUserID == getLoggedInUserId()){

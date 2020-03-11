@@ -20,6 +20,7 @@ namespace PortfolioPage.Pages.ProjectTracker
         public string maxCardWidth { get; set; }
         public string minCardWidth { get; set; }
         public string row5_ComponentSummary {get; set; }
+        public string row6_IssueAndUpdateSummary {get; set; }
         public string row7_DescriptionView {get; set; }
         
         public IList<project> projectList { get; set; }
@@ -27,6 +28,7 @@ namespace PortfolioPage.Pages.ProjectTracker
         public project currentProject {get; set; } 
 
         public bool parentComponentCardDisplayed = false;
+        public bool displaySingleProject = false;
         public projectComponent parentComponent;
         public projectComponent currentComponent {get; set; }
         public IList<projectComponent> componentList { get; set; }
@@ -42,7 +44,9 @@ namespace PortfolioPage.Pages.ProjectTracker
             minCardWidth = "256px";
             maxCardWidth = "50rem";
 
-            row5_ComponentSummary = "row mt-2 text-info border-bottom border-top";            
+            row5_ComponentSummary = "row mt-2 px-2 py-2 border-bottom border-top";            
+            row6_IssueAndUpdateSummary = "row px-2 py-2 border-bottom";            
+            //row7_DescriptionView = "row mt-2 px-2 py-2 text-info border-bottom border-top";            
 
         }        
 

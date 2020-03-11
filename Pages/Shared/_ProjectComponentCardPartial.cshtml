@@ -15,7 +15,7 @@
         <!-- master project card row -->
         @* TODO: Implement some way to filter the project components list, perhaps using some personal preferences 
         May want to default sort by components that are behind or sort by completion date*@
-        <div class="col-sm card border border-dark mr-3 my-3 text-dark" style="min-width: @cardMinWidth; max-width: @cardMaxWidth">
+        <div class="col-sm card border border-dark mr-5 my-3 text-dark" style="min-width: @cardMinWidth; max-width: @cardMaxWidth">
             <!-- Rows 1-4, High level details and actions -->
             <div class="row">
                 <div class="col">
@@ -103,49 +103,79 @@
                         @{
                             int totalComponents = 0;
                             int numComponentsBehind = 0;
+                            int numComponentsOnHold = 0;
+                            int numComponentsComplete = 0;
+                            int numNotComplete = 0;
+                            int numComponentsOnTrack = 0;
                             if(item.childComponents != null){
-                                totalComponents = item.childComponents.Count();
-                                numComponentsBehind = (from c in item.childComponents
-                                                    where c.componentStatus == projectComponent.componentStatusEnum.Behind
-                                                    select c).Count();
+                                var query = (from c in item.childComponents select c);
+                                // TODO: Should these be cached somehow?
+                                totalComponents = query.Count();
+                                numComponentsBehind = query.Where(m => m.componentStatus == projectComponent.componentStatusEnum.Behind).Count();
+                                numComponentsOnHold = query.Where(m => m.componentStatus == projectComponent.componentStatusEnum.OnHold).Count();
+                                numComponentsComplete = query.Where(m => m.componentStatus == projectComponent.componentStatusEnum.Complete).Count();
+                                numComponentsOnTrack = query.Where(m => m.componentStatus == projectComponent.componentStatusEnum.Complete).Count();
+                                numNotComplete = totalComponents - numComponentsComplete;                               
                             }
                             // TODO: Check if exposing project ID is a security flaw. Unlikely, but confirm
                             string ComponentCreationString = "/ProjectTracker/Component/Create?parentProjectID=" 
                                 + @item.projectID.ToString() + "&parentComponentID=" + item.ID.ToString();
                             
                             //Display data // TODO: Component summary on hover*@
-                            if(totalComponents == 0){
-                                <text>No Components</text>
+                            // TODO: Link to component summary
+                            if(totalComponents > 0){
+                                <button type="button" class="btn btn-primary">
+                                    <span class="badge badge-light">@totalComponents</span> Components
+                                    <span class="sr-only">total components</span>
+                                </button>   
                             }
-                            if(totalComponents == 1){
-                                @totalComponents <text>&nbsp;Component.&nbsp;</text>
+                            @if(numComponentsOnHold > 0){
+                                <button type="button" class="btn btn-secondary">
+                                    On hold <span class="badge badge-light">@numComponentsOnHold</span>
+                                    <span class="sr-only">components on hold</span>
+                                </button>
                             }
-                            if(totalComponents > 1){
-                                @totalComponents <text>&nbsp;Components.&nbsp;</text>
+                            @if(numComponentsOnTrack > 0){
+                                <button type="button" class="btn btn-success">
+                                    On hold <span class="badge badge-light">@numComponentsOnTrack</span>
+                                    <span class="sr-only">components on hold</span>
+                                </button>
                             }
-                            <b>
-                                @if(numComponentsBehind == 1){
-                                    @numComponentsBehind <text>&nbsp;component behind.&nbsp;</text>
-                                }
-                                @if(numComponentsBehind > 1){
-                                    @numComponentsBehind <text>&nbsp;components behind.&nbsp;</text>
-                                }
-                            </b>
+                            @if(numComponentsBehind > 0){
+                                <button type="button" class="btn btn-warning">
+                                    Behind <span class="badge badge-light">@numComponentsBehind</span>
+                                    <span class="sr-only">unread messages</span>
+                                </button>
+                            }
+                            @if(numComponentsComplete > 0){
+                                <button type="button" class="btn btn-info">
+                                    Complete <span class="badge badge-light">@numComponentsComplete</span>
+                                    <span class="sr-only">unread messages</span>
+                                </button>
+                            }
                             <a class="btn btn-info shadow-sm px-2 py-1 ml-2 my-2" href="@(ComponentCreationString)">
-                                New Component
+                                Add Component
                             </a>          
                         }
                     </div>               
                 </div>
             </div>
 
-            <!-- Row 6 Issues Summary -->
-            <div class="row mt-2 text-info border-bottom">
-                <div class="col">
+            <!-- Row 6 Issues and updates Summary -->
+            <div class="@Model.row6_IssueAndUpdateSummary">
+                <div class="col align-self-center">
                     Issues link and summary
-                    <a class="btn btn-primary shadow-sm px-2 py-1 ml-2 mb-2" href="#">
-                        New Issue
-                    </a>   
+                    <a class="badge badge-pill badge-info px-2 py-2" href="#">Add issue</a>   
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-primary mb-1">
+                        Updates <span class="badge badge-light">
+                        </span>
+                        <span class="sr-only">project component's updates</span>                        
+                    </button> 
+                    <a class="badge badge-pill badge-info px-2 py-2" 
+                    asp-page="/ProjectTracker/Update/Create"
+                    asp-route-ComponentID="@item.ID">Add update</a>
                 </div>
             </div> 
 
@@ -158,18 +188,18 @@
                         string dataTarget = "PRJ_ID_" + item.ID;
                         string dataTargetRef = "#" + dataTarget;
                         <div id="description">                            
-                                @{
-                                    if(descriptionLength > 50){
-                                        <button class="btn btn-muted" type="button" data-toggle="collapse" data-target="@dataTargetRef" aria-expanded="false" aria-controls="collapseOne">
-                                            <text>@HtmlEncoder.Encode(description.Remove(50)) ...</text>
-                                            <i class="text-primary">(Expand)</i>
-                                        </button>
-                                    }else{
-                                        <div class="my-1">
-                                            <text>@HtmlEncoder.Encode(description)</text>
-                                        </div>
-                                    }
+                            @{
+                                if(descriptionLength > 50){
+                                    <button class="btn btn-muted" type="button" data-toggle="collapse" data-target="@dataTargetRef" aria-expanded="false" aria-controls="collapseOne">
+                                        <text>@HtmlEncoder.Encode(description.Remove(50)) ...</text>
+                                        <i class="text-primary">(Expand)</i>
+                                    </button>
+                                }else{
+                                    <div class="my-1">
+                                        <text>@HtmlEncoder.Encode(description)</text>
+                                    </div>
                                 }
+                            }
                         </div>
                         if(descriptionLength > 50){
                             <div id="@dataTarget" class="collapse" aria-labelledby="headingOne" data-parent="#descriptionCollapse">

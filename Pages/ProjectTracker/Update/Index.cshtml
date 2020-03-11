@@ -1,0 +1,45 @@
+@page
+@model PortfolioPage.Pages.ProjectTracker.Update.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.projectUpdateViewModel[0].updateTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.projectUpdateViewModel[0].updateText)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.projectUpdateViewModel[0].projectUpdateType)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.projectUpdateViewModel) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.updateTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.updateText)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.projectUpdateType)
+            </td>
+            <td>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

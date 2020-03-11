@@ -1,184 +1,218 @@
 @model PortfolioPage.Pages.ProjectTracker.DI_BasePageModel
 
-@foreach (var item in Model.projectList)
-{   
-    Model.currentProject = item;
-    
-    <!-- master project card row -->
-    @* TODO: Implement some way to filter the projects list, perhaps using some personal preferences *@
-    <div class="col-sm card border border-dark mr-3 my-3 text-dark" style="min-width: @Model.minCardWidth; max-width: @Model.maxCardWidth">
-        <!-- Rows 1-4, High level details and actions -->
-        <div class="row">
-            <div class="col">
+@if(Model.displaySingleProject){
+    await RenderProjectCard(Model.currentProject, Model.minCardWidth, Model.maxCardWidth);
+    return; 
+}
+@foreach (project item in Model.projectList){
+    await RenderProjectCard(item, Model.minCardWidth, Model.maxCardWidth);
+}
 
-                <!-- Row 1 - Title-->
-                <div class="row">
-                    <div class="col h3 mt-1 mb-1">
-                        @Html.DisplayFor(modelItem => item.title)
-                    </div>   
-                </div>
+@{
+    async Task RenderProjectCard(project item, string cardMinWidth, string cardMaxWidth){   
+        Model.currentProject = item;
+        
+        <!-- master project card row -->
+        @* TODO: Implement some way to filter the projects list, perhaps using some personal preferences *@
+        <div class="col-sm card border border-dark mr-3 my-3 text-dark" style="min-width: @cardMinWidth; max-width: @cardMaxWidth">
+            <!-- Rows 1-4, High level details and actions -->
+            <div class="row">
+                <div class="col">
 
-                <!-- Row 2 - Visibility information -->    
-                <div class="row">          
-                    @if(item.isPublic){
-                        <div class="col mb-1 text-info">
-                            <svg class="bi bi-unlock" width="1em" height="1em" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M11.655 9H4.333c-.264 0-.398.068-.471.121a.73.73 0 00-.224.296 1.626 1.626 0 00-.138.59V15c0 .342.076.531.14.635.064.106.151.18.256.237a1.122 1.122 0 00.436.127l.013.001h7.322c.264 0 .398-.068.471-.121a.73.73 0 00.224-.296 1.627 1.627 0 00.138-.59V10c0-.342-.076-.531-.14-.635a.658.658 0 00-.255-.237 1.123 1.123 0 00-.45-.128zm.012-1H4.333C2.5 8 2.5 10 2.5 10v5c0 2 1.833 2 1.833 2h7.334c1.833 0 1.833-2 1.833-2v-5c0-2-1.833-2-1.833-2zM10.5 5a3.5 3.5 0 117 0v3h-1V5a2.5 2.5 0 00-5 0v3h-1V5z" clip-rule="evenodd"></path>
-                            </svg>
-                            This project is visible to the public
-                        </div>
-                    }
-                </div>
+                    <!-- Row 1 - Title-->
+                    <div class="row">
+                        <div class="col h3 mt-1 mb-1">
+                            @Html.DisplayFor(modelItem => item.title)
+                        </div>   
+                    </div>
 
-                <!-- Row 3 - Deadline information -->
-                <div class="row">
-                    <div class="col mb-1 text-muted">   
-                        @if(item.completionDate != null){
-                            <i>This project was completed on @Html.DisplayFor(model => item.completionDate)</i>
-                        }
-                        else
-                        {
-                            <i>@Html.DisplayNameFor(model => model.projectList[0].completionDeadline):&nbsp;
-                            @Html.DisplayFor(model => item.completionDeadline)</i>                                              
-                        }
-                    </div>              
-                </div>            
-                
-                <!-- Row 4 - Phase and status information-->
-                <div class="row">
-                    <div class="col-auto mr-auto border-left-0 border-top border-right border-secondary shadow rounded-right">
-
-                        <div class="row no-gutters">
-                            <!-- Phase information -->
-                            <div class="col-auto text-secondary">
-                                @Html.DisplayNameFor(model =>
-                                model.projectList[0].currentProjectPhase):&nbsp;
+                    <!-- Row 2 - Visibility information -->    
+                    <div class="row">          
+                        @if(item.isPublic){
+                            <div class="col mb-1 text-info">
+                                <svg class="bi bi-unlock" width="1em" height="1em" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M11.655 9H4.333c-.264 0-.398.068-.471.121a.73.73 0 00-.224.296 1.626 1.626 0 00-.138.59V15c0 .342.076.531.14.635.064.106.151.18.256.237a1.122 1.122 0 00.436.127l.013.001h7.322c.264 0 .398-.068.471-.121a.73.73 0 00.224-.296 1.627 1.627 0 00.138-.59V10c0-.342-.076-.531-.14-.635a.658.658 0 00-.255-.237 1.123 1.123 0 00-.45-.128zm.012-1H4.333C2.5 8 2.5 10 2.5 10v5c0 2 1.833 2 1.833 2h7.334c1.833 0 1.833-2 1.833-2v-5c0-2-1.833-2-1.833-2zM10.5 5a3.5 3.5 0 117 0v3h-1V5a2.5 2.5 0 00-5 0v3h-1V5z" clip-rule="evenodd"></path>
+                                </svg>
+                                This project is visible to the public
                             </div>
-                            <div class="col-auto text-dark">
-                                @Html.DisplayFor(modelItem => item.currentProjectPhase)
-                            </div>
-                        </div>                                
-                        <div class="row mb-1 no-gutters">
-                            <!-- Status information -->
-                            <div class="col-auto text-secondary">                                        
+                        }
+                    </div>
+
+                    <!-- Row 3 - Deadline information -->
+                    <div class="row">
+                        <div class="col mb-1 text-muted">   
+                            @if(item.completionDate != null){
+                                <i>This project was completed on @Html.DisplayFor(model => item.completionDate)</i>
+                            }
+                            else
+                            {
+                                <i>@Html.DisplayNameFor(model => model.projectList[0].completionDeadline):&nbsp;
+                                @Html.DisplayFor(model => item.completionDeadline)</i>                                              
+                            }
+                        </div>              
+                    </div>            
+                    
+                    <!-- Row 4 - Phase and status information-->
+                    <div class="row">
+                        <div class="col-auto mr-auto border-left-0 border-top border-right border-secondary shadow rounded-right">
+
+                            <div class="row no-gutters">
+                                <!-- Phase information -->
+                                <div class="col-auto text-secondary">
                                     @Html.DisplayNameFor(model =>
-                                    model.projectList[0].currentProjectStatus):&nbsp;
+                                    model.projectList[0].currentProjectPhase):&nbsp;
+                                </div>
+                                <div class="col-auto text-dark">
+                                    @Html.DisplayFor(modelItem => item.currentProjectPhase)
+                                </div>
+                            </div>                                
+                            <div class="row mb-1 no-gutters">
+                                <!-- Status information -->
+                                <div class="col-auto text-secondary">                                        
+                                        @Html.DisplayNameFor(model =>
+                                        model.projectList[0].currentProjectStatus):&nbsp;
+                                </div>
+                                @if(item.currentProjectStatus == project.projectStatus.onTrack)
+                                {
+                                <div class="col-auto text-success align-self-center px-1">                                        
+                                    <i><b>@Html.DisplayFor(modelItem => item.currentProjectStatus)</b></i>
+                                </div>
+                                }
+                                @if(item.currentProjectStatus == project.projectStatus.behind)
+                                {
+                                <div class="col-auto text-warning align-self-center px-1" style="background-color: black">
+                                    <i><b>@Html.DisplayFor(modelItem => item.currentProjectStatus)</b></i>
+                                </div>
+                                }
+                                @if(item.currentProjectStatus == project.projectStatus.complete)
+                                {
+                                <div class="col-auto text-info align-self-center px-1">
+                                    <i><b>@Html.DisplayFor(modelItem => item.currentProjectStatus)</b></i>
+                                </div>
+                                }
                             </div>
-                            @if(item.currentProjectStatus == project.projectStatus.onTrack)
-                            {
-                            <div class="col-auto text-success align-self-center px-1">                                        
-                                <i><b>@Html.DisplayFor(modelItem => item.currentProjectStatus)</b></i>
-                            </div>
-                            }
-                            @if(item.currentProjectStatus == project.projectStatus.behind)
-                            {
-                            <div class="col-auto text-warning align-self-center px-1" style="background-color: black">
-                                <i><b>@Html.DisplayFor(modelItem => item.currentProjectStatus)</b></i>
-                            </div>
-                            }
-                            @if(item.currentProjectStatus == project.projectStatus.complete)
-                            {
-                            <div class="col-auto text-info align-self-center px-1">
-                                <i><b>@Html.DisplayFor(modelItem => item.currentProjectStatus)</b></i>
-                            </div>
-                            }
                         </div>
                     </div>
+
                 </div>
-
-            </div>
-            <!-- High level actions -->
-            <div class="row justify-content-end">
-                <div class="col align-contents-center mr-1">                    
-                    <partial name="_ProjectActionsPartial" />   
-                </div>
-            </div>  
-        </div>
-
-        <!-- Row 5 Component Summary -->
-        <div class="@Model.row5_ComponentSummary">
-            <div class="col"> 
-                @{
-                    int totalComponents = 0;
-                    int numComponentsBehind = 0;
-                    if(item.components != null){
-                        totalComponents = (from c in item.components
-                                            where c.nodeDepth == 0
-                                            select c).Count();
-                        numComponentsBehind = (from c in item.components
-                                                where c.nodeDepth == 0 
-                                                && c.componentStatus == projectComponent.componentStatusEnum.Behind
-                                                select c).Count();
-                    }
-                    // TODO: Check if exposing project ID is a security flaw. Unlikely, but confirm
-                    string ComponentCreationString = "/ProjectTracker/Component/Create?parentProjectID=" + @item.ID.ToString();
-                    
-                    //Display data // TODO: Component summary on hover*@
-                    if(totalComponents == 0){
-                        <text>No Components</text>
-                    }
-                    if(totalComponents == 1){
-                        @totalComponents <text>&nbsp;Component.&nbsp;</text>
-                    }
-                    if(totalComponents > 1){
-                        @totalComponents <text>&nbsp;Components.&nbsp;</text>
-                    }
-                    <b>
-                        @if(numComponentsBehind == 1){
-                            @numComponentsBehind <text>&nbsp;component behind.&nbsp;</text>
-                        }
-                        @if(numComponentsBehind > 1){
-                            @numComponentsBehind <text>&nbsp;components behind.&nbsp;</text>
-                        }
-                    </b>
-                    <a class="btn btn-info shadow-sm px-2 py-1 ml-2 my-2" href="@(ComponentCreationString)">
-                        New Component
-                    </a>
-                }             
-            </div>
-        </div>
-
-        <!-- Row 6 Issues Summary -->
-        <div class="row mt-2 text-info border-bottom">
-            <div class="col">
-                Issues link and summary
-                <a class="btn btn-primary shadow-sm px-2 py-1 ml-2 mb-2" href="#">
-                    New Issue
-                </a>   
-            </div>
-        </div> 
-
-        <!-- Row 7 Description view-->
-        <div class="row">
-            <div class="col no-gutters text-center" id="descriptionCollapse">
-                <div id="description">
-                    @{
-                        var dataTarget = "PRJ_ID_" + item.ID;
-                        var dataTargetRef = "#" + dataTarget;
-                    }
-                    <button class="btn btn-muted no-gutters" type="button" data-toggle="collapse" data-target="@dataTargetRef" aria-expanded="false" aria-controls="collapseOne">
-                        @{
-                            var description = item.goalDescription;
-                            int descriptionLength = description.Length;
-                            if(descriptionLength > 50){
-                                <text>@HtmlEncoder.Encode(description.Remove(50)) ...</text>
-                                <i class="text-primary">(Expand)</i>
-                            }else{
-                                <text>@HtmlEncoder.Encode(description)</text>
-                            }
-                        }
-                    </button>
-                </div>
-
-                <div id="@dataTarget" class="collapse" aria-labelledby="headingOne" data-parent="#descriptionCollapse">
-                    <div class="card-body">
-                        @Html.DisplayFor(item => item.currentProject.goalDescription)                                
+                <!-- High level actions -->
+                <div class="row justify-content-end">
+                    <div class="col align-contents-center mr-1">                    
+                        <partial name="_ProjectActionsPartial" />   
                     </div>
                 </div>  
             </div>
-        </div>
 
-        
-    </div>
-        
+            <!-- Row 5 Component Summary -->
+            <div class="@Model.row5_ComponentSummary">
+                <div class="col"> 
+                    @{
+                        int totalComponents = 0;
+                        int numComponentsBehind = 0;
+                        int numComponentsOnHold = 0;
+                        int numComponentsComplete = 0;
+                        int numNotComplete = 0;
+                        int numComponentsOnTrack = 0;
+                        if(item.components != null){
+                            var query = (from c in item.components where c.nodeDepth == 0 select c);
+                            totalComponents = query.Count();
+                            numComponentsBehind = query.Where(m => m.componentStatus == projectComponent.componentStatusEnum.Behind).Count();
+                            numComponentsOnHold = query.Where(m => m.componentStatus == projectComponent.componentStatusEnum.OnHold).Count();
+                            numComponentsComplete = query.Where(m => m.componentStatus == projectComponent.componentStatusEnum.Complete).Count();
+                            numComponentsOnTrack = query.Where(m => m.componentStatus == projectComponent.componentStatusEnum.Complete).Count();
+                            numNotComplete = totalComponents - numComponentsComplete;                                                           
+                        }
+                        // TODO: Check if exposing project ID is a security flaw. Unlikely, but confirm
+                        string ComponentCreationString = "/ProjectTracker/Component/Create?parentProjectID=" + @item.ID.ToString();
+                        
+                        if(totalComponents > 0){
+                            <a type="button" class="btn btn-primary" asp-page="/ProjectTracker/Project/Details" 
+                                asp-route-id="@item.ID">
+                                <span class="badge badge-light">@totalComponents</span> Components
+                                <span class="sr-only">total components</span>
+                            </a>   
+                        }
+                        if(numComponentsOnHold > 0){
+                            <button type="button" class="btn btn-secondary">
+                                On hold <span class="badge badge-light">@numComponentsOnHold</span>
+                                <span class="sr-only">components on hold</span>
+                            </button>
+                        }
+                        if(numComponentsOnTrack > 0){
+                            <button type="button" class="btn btn-success">
+                                On hold <span class="badge badge-light">@numComponentsOnTrack</span>
+                                <span class="sr-only">components on hold</span>
+                            </button>
+                        }
+                        if(numComponentsBehind > 0){
+                            <button type="button" class="btn btn-warning">
+                                Behind <span class="badge badge-light">@numComponentsBehind</span>
+                                <span class="sr-only">unread messages</span>
+                            </button>
+                        }
+                        if(numComponentsComplete > 0){
+                            <button type="button" class="btn btn-info">
+                                Complete <span class="badge badge-light">@numComponentsComplete</span>
+                                <span class="sr-only">unread messages</span>
+                            </button>
+                        }
+                        <a class="badge badge-pill badge-info px-2 py-2" href="@(ComponentCreationString)">Add component</a>                        
+                    }             
+                </div>
+            </div>
+
+            <!-- Row 6 Issues and updates Summary -->
+            <div class="@Model.row6_IssueAndUpdateSummary">
+                <div class="col align-self-center">
+                    Issues link and summary
+                    <a class="badge badge-pill badge-info px-2 py-2" href="#">Add issue</a>   
+                </div>
+                <div class="col">
+                    @if(item.projectUpdates != null && !(!item.projectUpdates?.Any() ?? false)){
+                        <button type="button" class="btn btn-primary mb-1">
+                            Updates <span class="badge badge-light">@item.projectUpdates.Count()
+                            </span>
+                            <span class="sr-only">project's updates</span>
+                        </button> 
+                    }
+                    <a class="badge badge-pill badge-info px-2 py-2" 
+                    asp-page="/ProjectTracker/Update/Create"
+                    asp-route-ProjectID="@item.ID">Add update</a>
+                </div>
+            </div> 
+
+            <!-- Row 7 Description view-->
+            <div class="row">
+                <div class="col no-gutters text-center" id="descriptionCollapse">
+                    <div id="description">
+                        @{
+                            var dataTarget = "PRJ_ID_" + item.ID;
+                            var dataTargetRef = "#" + dataTarget;
+                        }
+                        <button class="btn btn-muted no-gutters" type="button" data-toggle="collapse" data-target="@dataTargetRef" aria-expanded="false" aria-controls="collapseOne">
+                            @{
+                                var description = item.goalDescription;
+                                int descriptionLength = description.Length;
+                                if(descriptionLength > 50){
+                                    <text>@HtmlEncoder.Encode(description.Remove(50)) ...</text>
+                                    <i class="text-primary">(Expand)</i>
+                                }else{
+                                    <text>@HtmlEncoder.Encode(description)</text>
+                                }
+                            }
+                        </button>
+                    </div>
+
+                    <div id="@dataTarget" class="collapse" aria-labelledby="headingOne" data-parent="#descriptionCollapse">
+                        <div class="card-body">
+                            @Html.DisplayFor(item => item.currentProject.goalDescription)                                
+                        </div>
+                    </div>  
+                </div>
+            </div>
+
+            
+        </div>
+            
+    }
 }

@@ -4,6 +4,15 @@
 @{
     ViewData["Title"] = "Details";
 }
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">@Model.currentProject.title</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Home</li>
+    </ol>
+</nav>
+<!--script>
+    alert("Hello! I am an alert box!");
+</script-->
 
 <div class="container-lg">
     <div class="row">

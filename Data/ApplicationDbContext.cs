@@ -33,7 +33,6 @@ namespace PortfolioPage.Data
             modelBuilder.Entity<projectUpdate>().ToTable("Project Update");
             modelBuilder.Entity<projectUpdateEditHistory>().ToTable("Project Update Edit Hx");
         }
-        
     }
     
 }

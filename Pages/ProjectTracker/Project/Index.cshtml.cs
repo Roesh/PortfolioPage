@@ -41,8 +41,9 @@ namespace PortfolioPage.Pages.ProjectTracker.Project
                 var projects = (from c in Context.project
                             where c.creatingUserID == requestedUserId 
                             && c.isPublic
-                            select c).Include(project => project.components);
-                
+                            select c)
+                            .Include(project => project.components).AsNoTracking()
+                            .Include(project => project.projectUpdates).AsNoTracking();
                 projectList = await projects.ToListAsync();
             }
             

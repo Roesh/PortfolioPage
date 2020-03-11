@@ -1,5 +1,9 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel;
+using System.Collections.Generic;
+using PortfolioPage.Models;
 
 namespace PortfolioPage.Models
 {
@@ -28,8 +32,12 @@ namespace PortfolioPage.Models
 
         [Required]
         [Display(Name="Update text")]         
-        [StringLength(magicNumbers.maxDescriptionLength, MinimumLength = magicNumbers.maxDescriptionLength,  ErrorMessage = "{0} length must be between {2} and {1}.")]
+        [StringLength(magicNumbers.maxDescriptionLength, MinimumLength = magicNumbers.minDescriptionLength,  ErrorMessage = "{0} length must be between {2} and {1}.")]
         public string updateText {get; set;}
+
+        // user ID from AspNetUser table.
+        [Required]
+        public string creatingUserID {get; set;}
 
         [Required]
         [Display(Name="Update type")]
@@ -43,15 +51,14 @@ namespace PortfolioPage.Models
         [DataType(DataType.Date)]
         public DateTime? lastEditDate { get; set; }      
 
-        [Required]
-        public int projectID {get; set; }
-
-        [Required]
-        public int projectComponentID {get; set;}
+        // TODO: See if we can make the requirement here that either projectID or projectcompoenntID must exist        
+        public int? projectID {get; set; }
+        
+        public int? projectComponentID {get; set;}
     }
     
-    public class projectUpdateViewModel{        
-        int ID;
+    public class projectUpdateViewModel{
+
         [Required]
         [Display(Name="Update Title")]         
         [StringLength(magicNumbers.maxProjectTitleLength, MinimumLength = magicNumbers.minProjectTitleLength,  ErrorMessage = "{0} length must be between {2} and {1}.")]
@@ -59,7 +66,7 @@ namespace PortfolioPage.Models
 
         [Required]
         [Display(Name="Update text")]         
-        [StringLength(magicNumbers.maxDescriptionLength, MinimumLength = magicNumbers.maxDescriptionLength,  ErrorMessage = "{0} length must be between {2} and {1}.")]
+        [StringLength(magicNumbers.maxDescriptionLength, MinimumLength = magicNumbers.minDescriptionLength,  ErrorMessage = "{0} length must be between {2} and {1}.")]
         public string updateText {get; set;}
 
         [Required]

@@ -73,6 +73,10 @@ namespace PortfolioPage.Pages_ProjectTracker_Component
             var projectComponentEntry = Context.Attach(projectComponent);
             projectComponentEntry.CurrentValues.SetValues(projectComponentVM);
 
+            // Perform other edit based actions here
+            {
+                
+            }
             ModelState.Clear();
             if (!TryValidateModel(projectComponentEntry.Entity))
             {

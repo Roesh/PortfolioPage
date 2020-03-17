@@ -31,19 +31,19 @@ ViewData["Title"] = "Index";
 <div class="container-lg">
     <div class="row justify-content-center">
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <strong>Application still in development</strong>, screens and logic are subject to change
+        <strong>Application still in development</strong>, screens and logic are subject to change, but feel free to create an account and play around. 
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
         </div>
-    </div>   
+    </div>
 
     @if(Model.RequestedUserFound){
         <div class="row">
             <div class="col card grad-bg-1">
-                <p class="row h4 my-5 mb-4 px-3">Viewing&nbsp;<b>@Model.requestedUserName's</b>&nbsp;public projects</p>                
+                <p class="row h4 my-5 mb-4 px-3">Viewing&nbsp;<b>@Model.requestedUserName's</b>&nbsp;public projects</p>
             </div>
-        </div>    
+        </div>
         <hr>
     }
 

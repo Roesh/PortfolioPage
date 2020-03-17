@@ -39,8 +39,8 @@ namespace PortfolioPage.Pages.ProjectTracker.Component
             }
 
             if(parentComponentID != null){
-                currentComponent = await Context.projectComponent.FindAsync(parentComponentID);                
-                if(currentComponent == null){
+                parentComponent = await Context.projectComponent.FindAsync(parentComponentID);                
+                if(parentComponent == null){
                     return NotFound(new ArgumentException("Parent component ID argument not found"));
                 }
             }
@@ -58,8 +58,7 @@ namespace PortfolioPage.Pages.ProjectTracker.Component
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync(int parentProjectID, int? parentComponentID)
-        {
-            projectComponent parentComponent = null;
+        {            
             if(parentComponentID != null){
                 parentComponent = await Context.projectComponent.FindAsync(parentComponentID);
                 if(parentComponent == null){
@@ -67,11 +66,11 @@ namespace PortfolioPage.Pages.ProjectTracker.Component
                 }
             }
 
-            var project = await Context.project.FindAsync(parentProjectID);     
-            if(project == null){
+            currentProject = await Context.project.FindAsync(parentProjectID);     
+            if(currentProject == null){
                 return NotFound();
             }
-            if(project.creatingUserID != getLoggedInUserId()){
+            if(currentProject.creatingUserID != getLoggedInUserId()){
                 return Forbid();
             }            
             

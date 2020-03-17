@@ -20,6 +20,10 @@ namespace PortfolioPage.Data
         public DbSet<projectUpdate> projectUpdate { get; set; }
         public DbSet<projectUpdateEditHistory> projectUpdateEditHistory { get; set; }        
         
+        public DbSet<issue> issue { get; set; }
+        public DbSet<issuePriorityHistory> issuePriorityEditHistory { get; set; }
+        public DbSet<issueStatusHistory> issueStatusEditHistory { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -32,6 +36,10 @@ namespace PortfolioPage.Data
 
             modelBuilder.Entity<projectUpdate>().ToTable("Project Update");
             modelBuilder.Entity<projectUpdateEditHistory>().ToTable("Project Update Edit Hx");
+            
+            modelBuilder.Entity<issue>().ToTable("Issue");
+            modelBuilder.Entity<issuePriorityHistory>().ToTable("Issue Priority Edit Hx");
+            modelBuilder.Entity<issueStatusHistory>().ToTable("Issue Status Edit Hx");
         }
     }
     

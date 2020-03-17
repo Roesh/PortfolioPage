@@ -5,58 +5,83 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create new project component for </h1>
+<div class="container-lg">
+    <div class="row">
+        <div class="col card grad-bg-1">
+            <span class="h4 my-5">Creating new project component for 
+                @if(Model.parentComponent != null){                    
+                    <strong>@Model.parentComponent.title</strong>
+                    <br>
+                    <text>Project:</text>
+                }
+            <strong>@Model.currentProject.title</strong>
+            </span>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>  
+                <div class="row">
+                    <div class="col-12 form-group">                
+                        <label asp-for="projectComponentVM.title" class="control-label"></label>
+                        <input asp-for="projectComponentVM.title" class="form-control" />
+                        <span asp-validation-for="projectComponentVM.title" class="text-danger"></span>
+                    </div>
+                    <div class="col-auto form-group">
+                        <label asp-for="projectComponentVM.startDate" class="control-label"></label>
+                        <input asp-for="projectComponentVM.startDate" class="form-control" />
+                        <span asp-validation-for="projectComponentVM.startDate" class="text-danger"></span>
+                    </div>            
+                    <div class="col-auto form-group">
+                        <label asp-for="projectComponentVM.completionDeadline" class="control-label"></label>
+                        <input asp-for="projectComponentVM.completionDeadline" class="form-control" />
+                        <span asp-validation-for="projectComponentVM.completionDeadline" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col form-group">
+                        <label asp-for="projectComponentVM.componentDescription" class="control-label"></label>
+                        <textarea asp-for="projectComponentVM.componentDescription" class="form-control d-flex" rows="8"></textarea>
+                        <span asp-validation-for="projectComponentVM.componentDescription" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-auto form-group">
+                        <label asp-for="projectComponentVM.componentStatus" class="control-label"></label>
+                        <select asp-for="projectComponentVM.componentStatus" class="form-control"
+                            asp-items="Html.GetEnumSelectList<PortfolioPage.Models.projectComponent.componentStatusEnum>()">
+                        </select>
+                        <span asp-validation-for="projectComponentVM.componentStatus" class="text-danger"></span>
+                    </div>
+                    <div class="col-auto form-group">
+                        <label asp-for="projectComponentVM.componentType" class="control-label"></label>
+                        <select asp-for="projectComponentVM.componentType" class="form-control" 
+                            asp-items="Html.GetEnumSelectList<PortfolioPage.Models.projectComponent.componentTypeEnum>()">
+                        </select>
+                        <span asp-validation-for="projectComponentVM.componentType" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group mt-3">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
 
-<h4>projectComponent</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>  
-            <div class="form-group">                
-                <label asp-for="projectComponentVM.title" class="control-label"></label>
-                <input asp-for="projectComponentVM.title" class="form-control" />
-                <span asp-validation-for="projectComponentVM.title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="projectComponentVM.componentDescription" class="control-label"></label>
-                <input asp-for="projectComponentVM.componentDescription" class="form-control" />
-                <span asp-validation-for="projectComponentVM.componentDescription" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="projectComponentVM.startDate" class="control-label"></label>
-                <input asp-for="projectComponentVM.startDate" class="form-control" />
-                <span asp-validation-for="projectComponentVM.startDate" class="text-danger"></span>
-            </div>            
-            <div class="form-group">
-                <label asp-for="projectComponentVM.completionDeadline" class="control-label"></label>
-                <input asp-for="projectComponentVM.completionDeadline" class="form-control" />
-                <span asp-validation-for="projectComponentVM.completionDeadline" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="projectComponentVM.componentStatus" class="control-label"></label>
-                <select asp-for="projectComponentVM.componentStatus" class="form-control"
-                    asp-items="Html.GetEnumSelectList<PortfolioPage.Models.projectComponent.componentStatusEnum>()">
-                </select>
-                <span asp-validation-for="projectComponentVM.componentStatus" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="projectComponentVM.componentType" class="control-label"></label>
-                <select asp-for="projectComponentVM.componentType" class="form-control" 
-                    asp-items="Html.GetEnumSelectList<PortfolioPage.Models.projectComponent.componentTypeEnum>()">
-                </select>
-                <span asp-validation-for="projectComponentVM.componentType" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+    <div>
+        @if(Model.parentComponent != null){
+            <a asp-page="/ProjectTracker/Component/Details"
+                asp-route-id="@Model.parentComponent.ID">Back to Component</a>
+        }else{ 
+            <a asp-page="/ProjectTracker/Project/Details"
+                asp-route-id="@Model.currentProject.ID">Back to Project</a>
+        }
     </div>
 </div>
 
-<div>
-    <a asp-page="./Index">Back to List</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

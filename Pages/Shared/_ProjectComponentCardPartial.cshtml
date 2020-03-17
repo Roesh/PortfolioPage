@@ -144,39 +144,39 @@
                             //Display data // TODO: Component summary on hover*@
                             // TODO: Link to component summary
                             if(totalComponents > 0){
-                                <button type="button" class="btn btn-primary"
+                                <a type="button" class="btn btn-primary"
                                     asp-page="/ProjectTracker/Component/Details"
                                     asp-route-id="@item.ID">
                                     <span class="badge badge-light">@totalComponents</span> Components
                                     <span class="sr-only">total components</span>
-                                </button>   
+                                </a>   
                             }
                             @if(numComponentsOnHold > 0){
-                                <button type="button" class="btn btn-secondary"
+                                <a type="button" class="btn btn-secondary"
                                     asp-page="/ProjectTracker/Component/Details"
                                     asp-route-id="@item.ID"
                                     asp-route-filter="onHold">
                                     On hold <span class="badge badge-light">@numComponentsOnHold</span>
                                     <span class="sr-only">components on hold</span>
-                                </button>
+                                </a>
                             }
                             @if(numComponentsOnTrack > 0){
-                                <button type="button" class="btn btn-success">
+                                <a type="button" class="btn btn-success">
                                     On hold <span class="badge badge-light">@numComponentsOnTrack</span>
                                     <span class="sr-only">components on hold</span>
-                                </button>
+                                </a>
                             }
                             @if(numComponentsBehind > 0){
-                                <button type="button" class="btn btn-warning">
+                                <a type="button" class="btn btn-warning">
                                     Behind <span class="badge badge-light">@numComponentsBehind</span>
                                     <span class="sr-only">unread messages</span>
-                                </button>
+                                </a>
                             }
                             @if(numComponentsComplete > 0){
-                                <button type="button" class="btn btn-info">
+                                <a type="button" class="btn btn-info">
                                     Complete <span class="badge badge-light">@numComponentsComplete</span>
                                     <span class="sr-only">unread messages</span>
-                                </button>
+                                </a>
                             }
                             <a class="btn btn-info shadow-sm px-2 py-1 ml-2 my-2" href="@(ComponentCreationString)">
                                 Add Component

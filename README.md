@@ -8,4 +8,4 @@ I may also think of other projects, such as a calendar app or time management ap
 
 I can also track progress on things like server setup or upload information about past projects like the mail server I created and the lessons I learned from it.
 
-//POTENTIAL TODO: in appsettings.json (because comments are not permitted in JSON) see if the default connection can go into an environment variable
+Do NOT commit secrets; use the secret store and environment variables.

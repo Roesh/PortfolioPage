@@ -45,7 +45,7 @@ namespace PortfolioPage.Models
         public string issueTitle { get; set; }
         
         [Required]
-        [Display(Name="Issue text")]
+        [Display(Name="Issue description")]
         [StringLength(magicNumbers.maxDescriptionLength, MinimumLength = magicNumbers.minDescriptionLength,  ErrorMessage = "{0} length must be between {2} and {1}.")]
         public string issueText {get; set;}
 
@@ -93,7 +93,7 @@ namespace PortfolioPage.Models
         public string issueTitle { get; set; }
         
         [Required]
-        [Display(Name="Issue text")]
+        [Display(Name="Issue description")]
         [StringLength(magicNumbers.maxDescriptionLength, MinimumLength = magicNumbers.minDescriptionLength,  ErrorMessage = "{0} length must be between {2} and {1}.")]
         public string issueText {get; set;}
 

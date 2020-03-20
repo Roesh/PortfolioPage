@@ -40,7 +40,8 @@ namespace PortfolioPage.Pages.ProjectTracker
                         where c.creatingUserID == currentUserId
                         select c)
                         .Include(project => project.components).AsNoTracking()
-                        .Include(project => project.projectUpdates).AsNoTracking();
+                        .Include(project => project.projectUpdates).AsNoTracking()
+                        .Include(project => project.projectIssues).AsNoTracking();
 
             projectList = await projects.ToListAsync();
 

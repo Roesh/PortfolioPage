@@ -31,7 +31,7 @@ namespace PortfolioPage.Pages.ProjectTracker.Component
             this.parentProjectID = parentProjectID;
             this.parentComponentID = parentComponentID;
 
-            currentProject = await Context.project.FindAsync(parentProjectID);
+            currentProject = await GetProjectAsync(parentProjectID,true,true);
             
             // AUTHORIZATION
             if(currentProject.creatingUserID != getLoggedInUserId()){
@@ -43,6 +43,7 @@ namespace PortfolioPage.Pages.ProjectTracker.Component
                 if(parentComponent == null){
                     return NotFound(new ArgumentException("Parent component ID argument not found"));
                 }
+                currentComponent = parentComponent;
             }
 
             if(currentProject == null){

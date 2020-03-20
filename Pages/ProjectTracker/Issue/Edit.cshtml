@@ -1,0 +1,85 @@
+@page
+@model PortfolioPage.Pages_ProjectTracker_Issue.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>issue</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="issue.ID" />
+            <div class="form-group">
+                <label asp-for="issue.issueTitle" class="control-label"></label>
+                <input asp-for="issue.issueTitle" class="form-control" />
+                <span asp-validation-for="issue.issueTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="issue.issueText" class="control-label"></label>
+                <input asp-for="issue.issueText" class="form-control" />
+                <span asp-validation-for="issue.issueText" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="issue.creatingUserID" class="control-label"></label>
+                <input asp-for="issue.creatingUserID" class="form-control" />
+                <span asp-validation-for="issue.creatingUserID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="issue.assignedUsedID" class="control-label"></label>
+                <input asp-for="issue.assignedUsedID" class="form-control" />
+                <span asp-validation-for="issue.assignedUsedID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="issue.projectIssueType" class="control-label"></label>
+                <select asp-for="issue.projectIssueType" class="form-control"></select>
+                <span asp-validation-for="issue.projectIssueType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="issue.projectIssueStatus" class="control-label"></label>
+                <select asp-for="issue.projectIssueStatus" class="form-control"></select>
+                <span asp-validation-for="issue.projectIssueStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="issue.projectIssuePriority" class="control-label"></label>
+                <select asp-for="issue.projectIssuePriority" class="form-control"></select>
+                <span asp-validation-for="issue.projectIssuePriority" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="issue.issueCreationDate" class="control-label"></label>
+                <input asp-for="issue.issueCreationDate" class="form-control" />
+                <span asp-validation-for="issue.issueCreationDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="issue.lastEditDate" class="control-label"></label>
+                <input asp-for="issue.lastEditDate" class="form-control" />
+                <span asp-validation-for="issue.lastEditDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="issue.projectID" class="control-label"></label>
+                <input asp-for="issue.projectID" class="form-control" />
+                <span asp-validation-for="issue.projectID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="issue.projectComponentID" class="control-label"></label>
+                <input asp-for="issue.projectComponentID" class="form-control" />
+                <span asp-validation-for="issue.projectComponentID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

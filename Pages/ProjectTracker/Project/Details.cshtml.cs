@@ -28,27 +28,30 @@ namespace PortfolioPage.Pages.ProjectTracker.Project
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            Project = await Context.project.FirstOrDefaultAsync(m => m.ID == id);
-            projectList = new List<project>();
-            projectList.Add(Project);
-
-            if (Project == null)
+            currentProject = await (from p in Context.project
+                                where p.ID == id
+                                select p)
+                                .Include(p => p.components)
+                                .Include(p => p.projectUpdates)
+                                .FirstOrDefaultAsync();
+            
+            if (currentProject == null)
             {
                 return NotFound();
             }
 
-            var isPublic = Project.isPublic;
+            var isPublic = currentProject.isPublic;
             if (!isPublic && Project.creatingUserID != getLoggedInUserId())
             {
                 return Forbid();
             }
             
-            componentList = (from pc in Context.projectComponent
+            componentList = await (from pc in Context.projectComponent
                                 where pc.projectID == id && pc.nodeDepth == 0
                                 select pc)
                                 .Include(pc => pc.childComponents)
                                 .Include(pc => pc.projectUpdates)
-                                .ToList();
+                                .ToListAsync();
 
             // AUTHORIZATION
             if(componentList.FirstOrDefault()?.creatingUserID == getLoggedInUserId()){

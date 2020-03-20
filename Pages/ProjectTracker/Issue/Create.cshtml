@@ -1,0 +1,72 @@
+@page
+@model PortfolioPage.Pages.ProjectTracker.Issue.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="container-lg">
+    <div class="row">
+        <div class="col card grad-bg-1">
+                 
+            <div class="row h4 mt-3 justify-content-center">
+                Opening new issue for
+            </div>
+            <div class="row justify-content-center">
+                @{
+                    Model.displaySingleProject = true;
+                    Model.displaySingleComponent = true;
+                    if(Model.currentComponent != null){
+                        <partial class="mx-auto" name="_ProjectComponentCardPartial" />
+                    }else{
+                        <partial class="mx-auto" name="_ProjectCardPartial" />
+                    }
+                }
+            </div>
+                 
+            <hr />
+
+            <div class="row justify-content-center">
+                <div class="col-md-4">
+                    <form method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="IssueVM.projectComponentID" />
+                        <input type="hidden" asp-for="IssueVM.projectID" />
+                        <div class="form-group">
+                            <label asp-for="IssueVM.issueTitle" class="control-label"></label>
+                            <input asp-for="IssueVM.issueTitle" class="form-control" />
+                            <span asp-validation-for="IssueVM.issueTitle" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="IssueVM.issueText" class="control-label"></label>
+                            <textarea asp-for="IssueVM.issueText" class="form-control d-flex" rows="4"></textarea>
+                            <span asp-validation-for="IssueVM.issueText" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="IssueVM.projectIssueType" class="control-label"></label>
+                            <select asp-for="IssueVM.projectIssueType" class="form-control"
+                                asp-items="Html.GetEnumSelectList<PortfolioPage.Models.issue.issueType>()">
+                            </select>
+                            <span asp-validation-for="IssueVM.projectIssueType" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="IssueVM.projectIssuePriority" class="control-label"></label>
+                            <select asp-for="IssueVM.projectIssuePriority" class="form-control"
+                                asp-items="Html.GetEnumSelectList<PortfolioPage.Models.issue.issuePriority>()">                        
+                            </select>
+                            <span asp-validation-for="IssueVM.projectIssuePriority" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Create" class="btn btn-primary" />
+                        </div>
+                    </form>
+                </div>                
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

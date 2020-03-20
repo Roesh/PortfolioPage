@@ -43,7 +43,9 @@ namespace PortfolioPage.Pages.ProjectTracker.Project
                             && c.isPublic
                             select c)
                             .Include(project => project.components).AsNoTracking()
-                            .Include(project => project.projectUpdates).AsNoTracking();
+                            .Include(project => project.projectUpdates).AsNoTracking()
+                            .Include(project => project.projectIssues).AsNoTracking();
+                            
                 projectList = await projects.ToListAsync();
             }
             

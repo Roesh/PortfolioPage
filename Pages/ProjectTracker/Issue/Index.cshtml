@@ -1,0 +1,96 @@
+@page
+@model PortfolioPage.Pages_ProjectTracker_Issue.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.issue[0].issueTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.issue[0].issueText)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.issue[0].creatingUserID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.issue[0].assignedUsedID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.issue[0].projectIssueType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.issue[0].projectIssueStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.issue[0].projectIssuePriority)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.issue[0].issueCreationDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.issue[0].lastEditDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.issue[0].projectID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.issue[0].projectComponentID)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.issue) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.issueTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.issueText)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.creatingUserID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.assignedUsedID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.projectIssueType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.projectIssueStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.projectIssuePriority)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.issueCreationDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.lastEditDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.projectID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.projectComponentID)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -8,17 +8,23 @@
 <div class="container-lg">
     <div class="row">
         <div class="col card grad-bg-1">
-            <span class="h4 my-5">Creating new project component for 
-                @if(Model.parentComponent != null){                    
-                    <strong>@Model.parentComponent.title</strong>
-                    <br>
-                    <text>Project:</text>
+            <div class="mx-auto">
+                Creating new project component for 
+                @{
+                    Model.displaySingleProject = true;
+                    Model.displaySingleComponent = true;
+                    if(Model.currentComponent != null){
+                        <partial name="_ProjectComponentCardPartial" />
+                    }else{
+                        <partial name="_ProjectCardPartial" />
+                    }
+                    
                 }
-            <strong>@Model.currentProject.title</strong>
-            </span>
+            </div>
         </div>
     </div>
     <hr />
+
     <div class="row">
         <div class="col-md-6">
             <form method="post">

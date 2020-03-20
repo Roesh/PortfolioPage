@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -46,7 +47,7 @@ namespace PortfolioPage.Pages.ProjectTracker
             Context = context;
             UserManager = userManager;
             AuthorizationService = authorizationService;
-            minCardWidth = "256px";
+            minCardWidth = "440px";
             maxCardWidth = "50rem";
 
             row5_ComponentSummary = "row mt-2 px-2 py-2 border-bottom border-top";            
@@ -108,6 +109,21 @@ namespace PortfolioPage.Pages.ProjectTracker
 
             projectComponentNameSL = new SelectList(projectComponentQuery.AsNoTracking(),
                         "projectComponentID", "Title", selectedProjectComponent);
+        }
+
+        public async Task<project> GetProjectAsync(int Id, bool includeComponents = false, bool includeUpdates = false, bool includeIssues = false){
+            var query = (from p in Context.project where p.ID == Id select p);
+            if(includeComponents){
+                query = query.Include(p => p.components);
+            }
+            if(includeUpdates){
+                query = query.Include(p => p.projectUpdates);
+            }
+            if(includeIssues){
+                query = query.Include(p => p.projectIssues);
+            }
+            var project = await query.FirstOrDefaultAsync();
+            return project;
         }
     }
     

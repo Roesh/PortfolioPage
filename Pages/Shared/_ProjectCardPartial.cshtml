@@ -1,6 +1,9 @@
 @model PortfolioPage.Pages.ProjectTracker.DI_BasePageModel
 
 @if(Model.displaySingleProject){
+    if(Model.currentProject == null){
+        return;
+    }
     await RenderProjectCard(Model.currentProject, Model.minCardWidth, Model.maxCardWidth);
     return; 
 }
@@ -31,8 +34,25 @@
 
                     <!-- Row 1 - Title-->
                     <div class="row">
-                        <div class="col h3 mt-1 mb-1">
+                        <div class="col h3 mt-1 mb-1">                            
+                            <img src="~/resources/projectIcon.svg" style="width: 32px; height: 32px" alt="project icon" />
                             @Html.DisplayFor(modelItem => item.title)
+                            @{
+                                string pillString = string.Empty;
+                                if(item.currentProjectStatus == project.projectStatus.complete)
+                                {
+                                    pillString = "badge badge-pill badge-success px-2 py-2";
+                                }
+                                if(item.currentProjectStatus == project.projectStatus.behind)
+                                {
+                                    pillString = "badge badge-pill badge-warning px-2 py-2";
+                                }
+                                if(item.currentProjectStatus == project.projectStatus.onTrack)
+                                {
+                                    pillString = "badge badge-pill badge-info px-2 py-2";
+                                }
+                                <div class="@pillString">@Html.DisplayFor(m => item.currentProjectStatus)</div>
+                            }
                         </div>   
                     </div>
 
@@ -49,7 +69,7 @@
                     </div>
 
                     <!-- Row 3 - Deadline information -->
-                    <div class="row">
+                    <div class="row h5">
                         <div class="col mb-1 text-muted">   
                             @if(item.completionDate != null){
                                 <i>This project was completed on @Html.DisplayFor(model => item.completionDate)</i>
@@ -66,7 +86,7 @@
                     </div>            
                     
                     <!-- Row 4 - Phase and status information-->
-                    <div class="row">
+                    <div class="row h5">@*
                         <div class="col-auto mr-auto border-left-0 border-top border-right border-secondary shadow rounded-right">
 
                             <div class="row no-gutters">
@@ -104,6 +124,14 @@
                                 </div>
                                 }
                             </div>
+                        </div>*@
+                        <!-- Phase information -->
+                        <div class="col-auto text-secondary">
+                            @Html.DisplayNameFor(model =>
+                            model.projectList[0].currentProjectPhase):&nbsp;
+                        </div>
+                        <div class="col-auto text-dark">
+                            @Html.DisplayFor(modelItem => item.currentProjectPhase)
                         </div>
                     </div>
 
@@ -118,7 +146,7 @@
 
             <!-- Row 5 Component Summary -->
             <div class="@Model.row5_ComponentSummary">
-                <div class="col"> 
+                <div class="col">                     
                     @{
                         int totalComponents = 0;
                         int numComponentsBehind = 0;
@@ -132,70 +160,165 @@
                             numComponentsBehind = query.Where(m => m.componentStatus == projectComponent.componentStatusEnum.Behind).Count();
                             numComponentsOnHold = query.Where(m => m.componentStatus == projectComponent.componentStatusEnum.OnHold).Count();
                             numComponentsComplete = query.Where(m => m.componentStatus == projectComponent.componentStatusEnum.Complete).Count();
-                            numComponentsOnTrack = query.Where(m => m.componentStatus == projectComponent.componentStatusEnum.Complete).Count();
-                            numNotComplete = totalComponents - numComponentsComplete;                                                           
+                            numComponentsOnTrack = query.Where(m => m.componentStatus == projectComponent.componentStatusEnum.OnTrack).Count();
+                            numNotComplete = totalComponents - numComponentsComplete;                                              
                         }
                         // TODO: Check if exposing project ID is a security flaw. Unlikely, but confirm
                         string ComponentCreationString = "/ProjectTracker/Component/Create?parentProjectID=" + @item.ID.ToString();
                         
-                        if(totalComponents > 0){
-                            <a type="button" class="btn btn-primary" 
-                                asp-page="/ProjectTracker/Project/Details" 
-                                asp-route-id="@item.ID">
-                                <span class="badge badge-light">@totalComponents</span> Components
-                                <span class="sr-only">total components</span>
-                            </a>   
-                        }
-                        if(numComponentsOnHold > 0){
-                            <button type="button" class="btn btn-secondary">
-                                On hold <span class="badge badge-light">@numComponentsOnHold</span>
-                                <span class="sr-only">components on hold</span>
-                            </button>
-                        }
-                        if(numComponentsOnTrack > 0){
-                            <button type="button" class="btn btn-success">
-                                On hold <span class="badge badge-light">@numComponentsOnTrack</span>
-                                <span class="sr-only">components on hold</span>
-                            </button>
-                        }
-                        if(numComponentsBehind > 0){
-                            <button type="button" class="btn btn-warning">
-                                Behind <span class="badge badge-light">@numComponentsBehind</span>
-                                <span class="sr-only">unread messages</span>
-                            </button>
-                        }
-                        if(numComponentsComplete > 0){
-                            <button type="button" class="btn btn-info">
-                                Complete <span class="badge badge-light">@numComponentsComplete</span>
-                                <span class="sr-only">unread messages</span>
-                            </button>
-                        }
-                        <a class="btn btn-info shadow-sm px-2 py-1 my-2" href="@(ComponentCreationString)">
-                            Add Component
+                        <a asp-page="/ProjectTracker/Project/Details" asp-route-id="@item.ID">
+                            <img src="~/resources/componentIcon.svg" style="width: 32px; height: 32px" alt="component icon"/>
+                            @if(totalComponents == 0){
+                                <text>No components.</text>
+                            }
+                            @if(totalComponents == 1){
+                                <text>1 component.</text>
+                            }
+                            @if(totalComponents > 1){
+                                @totalComponents <text> subcomponents.</text>
+                            }
+                            @if(numNotComplete > 0){
+                                <text> @numNotComplete in progress</text>
+                            }else if(totalComponents > 0){
+                                <text> All complete.</text>
+                            }
+                        </a>
+
+                        <a class="badge rounded-right badge-info shadow-sm px-2 py-2 ml-2 my-2" href="@(ComponentCreationString)">
+                            + Add Component
                         </a> 
+                        
+                        @if(numNotComplete > 0){
+                            <div>                           
+                                @if(numComponentsOnHold > 0){
+                                    <a type="button" class="badge badge-secondary badge-pill px-2 py-1" href="#">
+                                        @numComponentsOnHold On hold                                     
+                                    </a>
+                                }
+                                @if(numComponentsOnTrack > 0){
+                                    <a type="button" class="badge badge-success badge-pill text-light px-2 py-1">
+                                        @numComponentsOnTrack On Track 
+                                    </a>
+                                }
+                                @if(numComponentsBehind > 0){
+                                    <a type="button" class="badge badge-warning badge-pill px-2 py-1">
+                                        @numComponentsBehind Behind
+                                    </a>
+                                }
+                            </div> 
+                        }                       
                     }             
                 </div>
             </div>
 
             <!-- Row 6 Issues and updates Summary -->
             <div class="@Model.row6_IssueAndUpdateSummary">
+                <!-- Issues summary column -->
                 <div class="col align-self-center">
-                    Issues link and summary
-                    <a class="badge badge-pill badge-info px-2 py-2" href="#">Add issue</a>   
-                </div>
-                <div class="col">
-                    @if(item.projectUpdates != null && !(!item.projectUpdates?.Any() ?? false)){
-                        <a type="button" class="btn btn-primary mb-1"
-                            asp-page="/ProjectTracker/Update/Details"
-                            asp-route-ProjectID="@item.ID">
-                            Updates <span class="badge badge-light">@item.projectUpdates.Count()
-                            </span>
-                            <span class="sr-only">project's updates</span>
-                        </a> 
+                    @{
+                        int totalIssues = 0;
+                        int numIssuesEnhancement = 0;
+                        int numIssuesPerformance = 0;
+                        int numIssuesFunctionality = 0;
+                        int numClosed = 0;
+                        if(item.projectIssues != null){
+                            var query = (from i in item.projectIssues where i.projectIssueStatus != issue.issueStatus.Closed select i);
+                            totalIssues = query.Count();
+                            numIssuesEnhancement = query.Where(i => i.projectIssueType == issue.issueType.enhancementRequest).Count();
+                            numIssuesPerformance = query.Where(i => i.projectIssueType == issue.issueType.performance).Count();
+                            numIssuesFunctionality = query.Where(i => i.projectIssueType == issue.issueType.Functionality).Count();                            
+                            numClosed = query.Where(i => i.projectIssueStatus == issue.issueStatus.Closed).Count();                            
+                        }
                     }
-                    <a class="badge badge-pill badge-info px-2 py-2" 
-                    asp-page="/ProjectTracker/Update/Create"
-                    asp-route-ProjectID="@item.ID">Add update</a>
+                    
+                    <a asp-page="" asp-route-...="">
+                        <img src="~/resources/issueIcon.svg" style="width: 32px; height: 32px" alt="issue icon" />
+                        @if(totalIssues == 0){
+                            <text>No open issues.</text>
+                        }
+                        @if(totalIssues == 1){
+                            <text>1 open issue.</text>
+                        }
+                        @if(totalIssues > 1){
+                            @totalComponents <text> open issues.</text>
+                        }                        
+                    </a>
+
+                    <a class="badge badge-pill badge-info px-2 py-2 ml-2 mt-2" 
+                        asp-page="/ProjectTracker/Issue/Create"
+                        asp-route-ProjectID="@item.ID">Add issue</a>   
+
+                    @if(totalIssues > 0){
+                        <div>                           
+                            @if(numIssuesEnhancement > 0){
+                                <a type="button" class="badge badge-secondary badge-pill px-2 py-1" href="#">
+                                    @numIssuesEnhancement Enhancement
+                                </a>
+                            }
+                            @if(numIssuesFunctionality > 0){
+                                <a type="button" class="badge badge-warning badge-pill px-2 py-1" href="#">
+                                    @numIssuesFunctionality Functional
+                                </a>
+                            }
+                            @if(numIssuesPerformance > 0){
+                                <a type="button" class="badge badge-warning badge-pill px-2 py-1" href="#">
+                                    @numIssuesPerformance Performace
+                                </a>
+                            }
+                            @if(numClosed > 0){
+                                <a type="button" class="badge badge-primary badge-pill px-2 py-1" href="#">
+                                    @numClosed Closed
+                                </a>
+                            }
+                        </div>
+                    }
+                    
+                </div>
+
+                <!-- Updates summary column -->
+                <div class="col align-self-center">
+                    <img src="~/resources/updateIcon.svg" style="width: 32px; height: 32px" alt="update icon" />
+                    @{
+                        int totalUpdates = 0,noteUpdates = 0,roadBlockUpdates = 0;
+                        @if(item.projectUpdates != null && !(!item.projectUpdates?.Any() ?? false)){                            
+                                var query = (from u in item.projectUpdates select u);
+                                totalUpdates = query.Count();
+                                noteUpdates = query.Where(u => u.projectUpdateType == projectUpdate.updateType.note).Count();
+                                roadBlockUpdates = query.Where(u => u.projectUpdateType == projectUpdate.updateType.roadBlock).Count();
+                            }
+                            <a asp-page="/ProjectTracker/Update/Details"
+                                asp-route-ProjectID="@item.ID">
+                                
+                                @if(totalUpdates == 0){
+                                    <text>No updates.</text>
+                                }
+                                @if(totalUpdates == 1){
+                                    <text>1 update.</text>
+                                }
+                                @if(totalUpdates > 1){
+                                    @totalUpdates <text> updates.</text>
+                                }
+                            </a>
+                        <a class="badge badge-pill badge-info px-2 py-2 ml-2 mt-2" 
+                        asp-page="/ProjectTracker/Update/Create"
+                        asp-route-ProjectID="@item.ID">
+                            Add update
+                        </a>
+                        @if(totalUpdates > 0){
+                            <div>                           
+                                @if(noteUpdates > 0){
+                                    <a type="button" class="badge badge-primary badge-pill px-2 py-1" href="#">
+                                        @noteUpdates Note
+                                    </a>
+                                }
+                                @if(roadBlockUpdates > 0){
+                                    <a type="button" class="badge badge-secondary badge-pill text-light px-2 py-1">
+                                        @roadBlockUpdates Road block
+                                    </a>
+                                }
+                            </div> 
+                        }
+                    }
                 </div>
             </div> 
 

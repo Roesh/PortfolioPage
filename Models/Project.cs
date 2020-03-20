@@ -125,6 +125,7 @@ namespace PortfolioPage.Models
         public bool isPublic{get; set;}
 
         public ICollection<projectUpdate> projectUpdates {get; set;}
+        public ICollection<issue> projectIssues {get; set;}
     }
 
     public class projectViewModel

@@ -2,7 +2,7 @@ Roshan's portfolio page. Uses ASP.NET to dynamically generate pages. Meant to be
 
 Will showcase my projects and also serve my projects
 
-https://roshan.page/ProjectTracker hosts my project tracker application.
+Visit https://roshan.page/ProjectTracker/Project?user=RoshanJM to see the application in action.
 
 I may also think of other projects, such as a calendar app or time management app. When creating those projects, I can add data about their progress to the main project tracker application.
 

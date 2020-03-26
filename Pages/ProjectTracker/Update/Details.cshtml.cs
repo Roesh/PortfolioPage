@@ -33,7 +33,7 @@ namespace PortfolioPage.Pages.ProjectTracker.Update
                 bool componentIDProvided = (ComponentID != null);
 
                 if(!projectIDProvided && !componentIDProvided){
-                    return NotFound(new String("ProjectID or ComponentID parameters required to create a project update"));
+                    return NotFound(new String("ProjectID or ComponentID parameters required to view project updates"));
                 }
 
                 var updateListQuery = (from pu in Context.projectUpdate                                 
@@ -58,7 +58,7 @@ namespace PortfolioPage.Pages.ProjectTracker.Update
                 else if(projectIDProvided){
                     currentProject = await Context.project.FindAsync(ProjectID);
                     if(currentProject == null){
-                        return NotFound(new String("Parent component ID argument not found"));
+                        return NotFound(new String("Parent project ID argument not found"));
                     }
                     // AUTHORIZATION
                     if(currentProject.creatingUserID != getLoggedInUserId()){

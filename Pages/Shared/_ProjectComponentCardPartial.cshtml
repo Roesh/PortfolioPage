@@ -86,57 +86,16 @@
                     </div>            
                     
                     <!-- Row 4 - Type and Status information-->
-                    <div class="row h5">@*
-                        <div class="col-auto mr-auto border-left-0 border-top border-right border-secondary shadow rounded-right">
-                            <div class="row no-gutters">
-                                <!-- Type information -->
-                                <div class="col-auto text-secondary">
-                                    @Html.DisplayNameFor(model =>
-                                    model.componentList[0].componentType):&nbsp;
-                                </div>
-                                <div class="col-auto text-dark">
-                                    @Html.DisplayFor(modelItem => item.componentType)
-                                </div>
-                            </div>                                
-                            <div class="row mb-1 no-gutters">
-                                <!-- Status information -->
-                                <div class="col-auto text-secondary">                                        
-                                        @Html.DisplayNameFor(model =>
-                                        model.componentList[0].componentStatus):&nbsp;
-                                </div>
-                                @if(item.componentStatus == projectComponent.componentStatusEnum.OnTrack)
-                                {
-                                <div class="col-auto text-success align-self-center px-1">                                        
-                                    <i><b>@Html.DisplayFor(modelItem => item.componentStatus)</b></i>
-                                </div>
-                                }
-                                else if(item.componentStatus == projectComponent.componentStatusEnum.Behind)
-                                {
-                                <div class="col-auto text-warning align-self-center px-1" style="background-color: black">
-                                    <i><b>@Html.DisplayFor(modelItem => item.componentStatus)</b></i>
-                                </div>
-                                }
-                                else if(item.componentStatus == projectComponent.componentStatusEnum.Complete)
-                                {
-                                <div class="col-auto text-info align-self-center px-1">
-                                    <i><b>@Html.DisplayFor(modelItem => item.componentStatus)</b></i>
-                                </div>
-                                }
-                                else{
-                                    <div class="col-auto align-self-center px-1">
-                                        <i><b>@Html.DisplayFor(modelItem => item.componentStatus)</b></i>
-                                    </div>
-                                }
-                            </div>
-                        </div>
-                        *@
-                        <!-- Type information -->
-                        <div class="col-auto text-secondary">
-                            @Html.DisplayNameFor(model =>
-                            model.componentList[0].componentType):&nbsp;
-                        </div>
-                        <div class="col-auto text-dark">
-                            @Html.DisplayFor(modelItem => item.componentType)
+                    <div class="row h5">
+                        <div class="col-auto mr-auto mt-2 px-2 border-secondary shadow rounded-right">
+                            <!-- Type information -->
+                            <span class="text-secondary my-1">
+                                @Html.DisplayNameFor(model =>
+                                model.componentList[0].componentType):&nbsp;
+                            </span>
+                            <span class="text-dark my-1">
+                                @Html.DisplayFor(modelItem => item.componentType)
+                            </span>
                         </div>
                     </div>
 
@@ -222,9 +181,39 @@
 
             <!-- Row 6 Issues and updates Summary -->
             <div class="@Model.row6_IssueAndUpdateSummary">
+                <!-- Issues summary column -->
                 <div class="col align-self-center">
-                    <img src="~/resources/issueIcon.svg" style="width: 32px; height: 32px" alt="issue icon" />
-                    <a href="">No issues</a>
+                    @{
+                        int totalIssues = 0;
+                        int numIssuesEnhancement = 0;
+                        int numIssuesPerformance = 0;
+                        int numIssuesFunctionality = 0;
+                        int numClosed = 0;
+                        if(item.projectIssues != null){
+                            var query = (from i in item.projectIssues where i.projectIssueStatus != issue.issueStatus.Closed select i);
+                            totalIssues = query.Count();
+                            numIssuesEnhancement = query.Where(i => i.projectIssueType == issue.issueType.enhancementRequest).Count();
+                            numIssuesPerformance = query.Where(i => i.projectIssueType == issue.issueType.performance).Count();
+                            numIssuesFunctionality = query.Where(i => i.projectIssueType == issue.issueType.Functionality).Count();                            
+                            numClosed = query.Where(i => i.projectIssueStatus == issue.issueStatus.Closed).Count();                            
+                        }
+                    }
+
+                    <a asp-page="/ProjectTracker/Issue/Details" 
+                        asp-route-ProjectID="@item.projectID"
+                        asp-route-ComponentID="@item.ID">
+                        <img src="~/resources/issueIcon.svg" style="width: 32px; height: 32px" alt="issue icon" />
+                        @if(totalIssues == 0){
+                            <text>No open issues.</text>
+                        }
+                        @if(totalIssues == 1){
+                            <text>1 open issue.</text>
+                        }
+                        @if(totalIssues > 1){
+                            @totalComponents <text> open issues.</text>
+                        }                        
+                    </a>
+
                     <a class="badge badge-pill badge-info px-2 py-2 ml-2 mt-2" 
                         asp-page="/ProjectTracker/Issue/Create"
                         asp-route-ProjectID="@item.projectID"

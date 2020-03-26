@@ -94,7 +94,7 @@ namespace PortfolioPage.Data
                     startDate = DateTime.Parse("2020-3-16"),
                     completionDeadline = DateTime.Parse("2020-4-10"),
                     componentType = projectComponent.componentTypeEnum.Research,
-                    componentStatus = projectComponent.componentStatusEnum.OnTrack, 
+                    componentStatus = projectComponent.componentStatusEnum.Complete, 
                     nodeDepth = 0,
                     projectID = 1
                 },
@@ -107,7 +107,7 @@ namespace PortfolioPage.Data
                     startDate = DateTime.Parse("2020-3-16"),
                     completionDeadline = DateTime.Parse("2020-4-10"),
                     componentType = projectComponent.componentTypeEnum.Research,
-                    componentStatus = projectComponent.componentStatusEnum.OnTrack, 
+                    componentStatus = projectComponent.componentStatusEnum.Complete, 
                     nodeDepth = 1,
                     projectComponentID = 1,
                     projectID = 1
@@ -121,12 +121,37 @@ namespace PortfolioPage.Data
                     startDate = DateTime.Parse("2020-3-16"),
                     completionDeadline = DateTime.Parse("2020-4-10"),
                     componentType = projectComponent.componentTypeEnum.Research,
-                    componentStatus = projectComponent.componentStatusEnum.OnHold, 
+                    componentStatus = projectComponent.componentStatusEnum.Complete, 
                     nodeDepth = 1,
                     projectComponentID = 1,
                     projectID = 1
                 }
                 );
+            
+            context.projectUpdate.AddRange(
+                new projectUpdate{
+                    ID = 1,
+                    creatingUserID = creatingUserID,
+                    projectComponentID = 1,
+                    projectID = 1,
+                    projectUpdateType = projectUpdate.updateType.note,
+                    updateCreationDate = DateTime.Parse("2020-3-16"),
+                    updateTitle = "Research summary",
+                    updateText = "1) Finalize Project Details ->> Might require solidification of project components."
+                                    + "Any additions to the project later may or may not constitute \"scope creep\""
+                                    + "\n2) Set Clear Expectations"
+                                    + "\n3) Choose the Right Team and System"
+                                    + "\n4) Define Milestones"
+                                    + "\nInitiation, planning, execution, and closure ->> This can be the \"project status\""
+                                    + "\n5) Establish Clear Communication"
+                                    + "\n6) Manage Project Risks"
+                                    + "\n7) Avoid Scope Creep"
+                                    + "\n8) Evaluate the Project After Completion"
+                                    + "\n\n8 Strategies for Successful Project Management: https://online.king.edu/news/successful-project-management/ (King university)."
+                                    + "\nProject management guide: Tips, strategies, best practices (cio.com): https://www.cio.com/article/3243005/project-management-tips-strategies-best-practices.html"
+                                    + "\nhttps://www.youtube.com/watch?time_continue=2&v=0fW8aoxyVHs&feature=emb_logo"
+                }
+            );
 
             context.SaveChanges();
         }

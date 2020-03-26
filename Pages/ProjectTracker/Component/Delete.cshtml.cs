@@ -22,8 +22,7 @@ namespace PortfolioPage.Pages.ProjectTracker.Component
             : base(context, authorizationService, userManager)
         {
         }
-
-        [BindProperty]
+        
         public projectComponent projectComponent { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)

@@ -90,6 +90,8 @@ namespace PortfolioPage.Models
 
         [DisplayName("Component's associated updates")]
         public ICollection<projectUpdate> projectUpdates {get; set;}
+        [DisplayName("Component's associated issues")]
+        public ICollection<issue> projectIssues {get; set;}
         
     }
 

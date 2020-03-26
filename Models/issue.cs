@@ -53,7 +53,7 @@ namespace PortfolioPage.Models
         [Required]
         public string creatingUserID {get; set;}
                 
-        public string assignedUsedID {get; set;}
+        public string assignedUserID {get; set;}
 
         [Required]
         [Display(Name="Issue type")]
@@ -81,11 +81,11 @@ namespace PortfolioPage.Models
         public int? projectID {get; set; }
         
         public int? projectComponentID {get; set;}
+
+        public ICollection<issueResponse> issueResponses {get; set;}
     }
     
     public class projectIssueViewModel{
-        [Required]
-        int ID;
 
         [Required]
         [Display(Name="Issue title")]         

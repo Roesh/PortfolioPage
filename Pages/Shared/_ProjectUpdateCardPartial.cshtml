@@ -30,7 +30,19 @@
                     <!-- Row 1 - Title-->
                     <div class="row">
                         <div class="col h3 mt-1 mb-1">
+                            <img src="~/resources/updateIcon.svg" style="width: 32px; height: 32px" alt="project icon" />
                             @Html.DisplayFor(modelItem => item.updateTitle)
+                            @{
+                                string pillString = string.Empty;
+                                if(item.projectUpdateType == projectUpdate.updateType.roadBlock)
+                                {
+                                    pillString = "badge badge-pill badge-secondary px-2 py-2";
+                                }
+                                if(item.projectUpdateType == projectUpdate.updateType.note)
+                                {
+                                    pillString = "badge badge-primary badge-warning px-2 py-2";
+                                }
+                            }
                         </div>   
                     </div>
                     

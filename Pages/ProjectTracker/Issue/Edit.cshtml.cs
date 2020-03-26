@@ -5,73 +5,96 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using PortfolioPage.Data;
 using PortfolioPage.Models;
+using PortfolioPage.Pages.ProjectTracker;
+using Microsoft.AspNetCore.Identity;
+using System.Net.Http;
+using System.Net;
+using System.Web;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+using PortfolioPage.Pages.ProjectTracker.Component;
 
-namespace PortfolioPage.Pages_ProjectTracker_Issue
+namespace PortfolioPage.Pages.ProjectTracker.Issue
 {
-    public class EditModel : PageModel
+    public class EditModel : DI_BasePageModel
     {
-        private readonly PortfolioPage.Data.ApplicationDbContext _context;
-
-        public EditModel(PortfolioPage.Data.ApplicationDbContext context)
+        public EditModel(
+            ApplicationDbContext context,
+            IAuthorizationService authorizationService,
+            UserManager<IdentityUser> userManager)
+            : base(context, authorizationService, userManager)
         {
-            _context = context;
         }
 
         [BindProperty]
-        public issue issue { get; set; }
+        public projectIssueViewModel IssueVM { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
-        {
-            if (id == null)
-            {
+        public async Task<IActionResult> OnGetAsync(int id)
+        {       
+            var issue = await Context.issue.FirstOrDefaultAsync(m => m.ID == id);
+            if(issue == null){
                 return NotFound();
             }
+            
+            if(issue.projectComponentID != null){
+                currentComponent = await Context.projectComponent.FirstOrDefaultAsync(m => m.ID == issue.projectComponentID);
+            }            
+            currentProject = await Context.project.FirstOrDefaultAsync(m => m.ID == issue.projectID);
 
-            issue = await _context.issue.FirstOrDefaultAsync(m => m.ID == id);
-
-            if (issue == null)
+            // AUTHORIZATION
+            if(issue.creatingUserID != getLoggedInUserId()){
+                return Forbid();
+            }            
+            
+            IssueVM = new projectIssueViewModel();
             {
-                return NotFound();
+                IssueVM.issueTitle = issue.issueTitle;
+                IssueVM.issueText = issue.issueText;
+                IssueVM.projectComponentID = issue.projectComponentID;
+                IssueVM.projectID = issue.projectID;
+                IssueVM.projectIssuePriority = issue.projectIssuePriority;
+                IssueVM.projectIssueType = issue.projectIssueType;
             }
+            
             return Page();
         }
 
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(int? id)
         {
-            if (!ModelState.IsValid)
+            if(id == null){
+                return NotFound();
+            }
+            var issue = await Context.issue.FirstOrDefaultAsync(m => m.ID == id);
+
+            if(issue == null){
+                return NotFound();
+            }
+            // AUTHORIZATION
+            if(issue.creatingUserID != getLoggedInUserId()){
+                return Forbid();
+            }   
+
+            if(!ModelState.IsValid){
+                return Page();
+            }
+           
+            var issueEntry = Context.Attach(issue);
+            issueEntry.CurrentValues.SetValues(IssueVM);
+
+            ModelState.Clear();
+                        
+            if (!TryValidateModel(issueEntry.Entity))
             {
                 return Page();
             }
 
-            _context.Attach(issue).State = EntityState.Modified;
+            await Context.SaveChangesAsync();
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!issueExists(issue.ID))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return RedirectToPage("./Index");
-        }
-
-        private bool issueExists(int id)
-        {
-            return _context.issue.Any(e => e.ID == id);
+            return RedirectToPage("/ProjectTracker/MyProjects");
         }
     }
 }

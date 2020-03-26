@@ -3,6 +3,7 @@ using PortfolioPage.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -39,6 +40,12 @@ namespace PortfolioPage.Pages.ProjectTracker
         public IList<projectUpdate> updateList {get; set; }
         public projectUpdate currentUpdate {get; set; }
 
+        
+        public IList<issue> issueList {get; set; }
+        public issue currentIssue {get; set; }
+        
+        public issueResponseViewModel currentIssueResponseVM {get; set; }
+
         public DI_BasePageModel(
             ApplicationDbContext context,
             IAuthorizationService authorizationService,
@@ -51,9 +58,8 @@ namespace PortfolioPage.Pages.ProjectTracker
             maxCardWidth = "50rem";
 
             row5_ComponentSummary = "row mt-2 px-2 py-2 border-bottom border-top";            
-            row6_IssueAndUpdateSummary = "row px-2 py-2 border-bottom";            
+            row6_IssueAndUpdateSummary = "row px-2 py-2 border-bottom";
             //row7_DescriptionView = "row mt-2 px-2 py-2 text-info border-bottom border-top";            
-
         }        
 
         public string getLoggedInUserName(){

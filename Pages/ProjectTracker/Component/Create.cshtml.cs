@@ -31,7 +31,7 @@ namespace PortfolioPage.Pages.ProjectTracker.Component
             this.parentProjectID = parentProjectID;
             this.parentComponentID = parentComponentID;
 
-            currentProject = await GetProjectAsync(parentProjectID,true,true);
+            currentProject = await GetProjectAsync(parentProjectID,true,true,true);
             
             // AUTHORIZATION
             if(currentProject.creatingUserID != getLoggedInUserId()){

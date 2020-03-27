@@ -39,9 +39,9 @@ namespace PortfolioPage.Pages.ProjectTracker.Issue
             }
             
             if(issue.projectComponentID != null){
-                currentComponent = await Context.projectComponent.FirstOrDefaultAsync(m => m.ID == issue.projectComponentID);
+                currentComponent = await GetComponentAsync((int)issue.projectComponentID, true, true, true);
             }            
-            currentProject = await Context.project.FirstOrDefaultAsync(m => m.ID == issue.projectID);
+            currentProject = await GetProjectAsync((int)issue.projectID, true, true, true);
 
             // AUTHORIZATION
             if(issue.creatingUserID != getLoggedInUserId()){

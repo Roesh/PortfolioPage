@@ -131,6 +131,21 @@ namespace PortfolioPage.Pages.ProjectTracker
             var project = await query.FirstOrDefaultAsync();
             return project;
         }
+
+        public async Task<projectComponent> GetComponentAsync(int Id, bool includeChildren = false, bool includeUpdates = false, bool includeIssues = false){
+            var query = (from c in Context.projectComponent where c.ID == Id select c);
+            if(includeChildren){
+                query = query.Include(c => c.childComponents);
+            }
+            if(includeUpdates){
+                query = query.Include(c => c.projectUpdates);
+            }
+            if(includeIssues){
+                query = query.Include(c => c.projectIssues);
+            }
+            var component = await query.FirstOrDefaultAsync();
+            return component;
+        }
     }
     
 }

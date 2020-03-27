@@ -41,7 +41,7 @@ namespace PortfolioPage.Pages.ProjectTracker.Update
                     return NotFound(new String("ProjectID or ComponentID parameters required to create a project update"));
                 }
                 if(projectIDProvided){
-                    currentProject = await Context.project.FindAsync(ProjectID);
+                    currentProject = await GetProjectAsync((int)ProjectID, true, true, true);
                     if(currentProject == null){
                         return NotFound(new String("Parent component ID argument not found"));
                     }
@@ -51,7 +51,7 @@ namespace PortfolioPage.Pages.ProjectTracker.Update
                     }
                 }
                 if(componentIDProvided){
-                    currentComponent = await Context.projectComponent.FindAsync(ComponentID);
+                    currentComponent = await GetComponentAsync((int)ComponentID, true, true, true);
                     if(currentComponent == null){
                         return NotFound(new String("Parent component ID argument not found"));
                     }
@@ -78,7 +78,7 @@ namespace PortfolioPage.Pages.ProjectTracker.Update
                     return NotFound(new String("ProjectID or ComponentID parameters required to create a project update"));
                 }
                 if(componentIDProvided){
-                    currentComponent = await Context.projectComponent.FindAsync(ComponentID);
+                    currentComponent = await GetComponentAsync((int)ComponentID, true, true, true);
                     if(currentComponent == null){
                         return NotFound(new String("Parent component ID argument not found"));
                     }

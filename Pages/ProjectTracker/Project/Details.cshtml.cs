@@ -28,12 +28,7 @@ namespace PortfolioPage.Pages.ProjectTracker.Project
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            currentProject = await (from p in Context.project
-                                where p.ID == id
-                                select p)
-                                .Include(p => p.components)
-                                .Include(p => p.projectUpdates)
-                                .FirstOrDefaultAsync();
+            currentProject = await GetProjectAsync(id,true, true, true);
             
             if (currentProject == null)
             {

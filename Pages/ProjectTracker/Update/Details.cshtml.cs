@@ -40,7 +40,7 @@ namespace PortfolioPage.Pages.ProjectTracker.Update
                                         select pu);
 
                 if(componentIDProvided){
-                    currentComponent = await Context.projectComponent.FindAsync(ComponentID);
+                    currentComponent = await GetComponentAsync((int)ComponentID, true, true, true);
                     if(currentComponent == null){
                         return NotFound(new String("Parent component ID argument not found"));
                     }
@@ -48,15 +48,15 @@ namespace PortfolioPage.Pages.ProjectTracker.Update
                     if(currentComponent.creatingUserID != getLoggedInUserId()){
                         return Forbid();                        
                     }                    
-                    currentProject = await Context.project.FindAsync(currentComponent.projectID);
+                    currentProject = await GetProjectAsync(currentComponent.projectID, true, true, true);
                     
                     updateList = updateListQuery.Where(pu => pu.projectComponentID == currentComponent.ID)
-                                    .ToList();;
+                                    .ToList();
                                     
                 }
                 
                 else if(projectIDProvided){
-                    currentProject = await Context.project.FindAsync(ProjectID);
+                    currentProject = await GetProjectAsync((int)ProjectID, true, true, true);
                     if(currentProject == null){
                         return NotFound(new String("Parent project ID argument not found"));
                     }

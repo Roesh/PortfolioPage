@@ -145,12 +145,13 @@
                             @if(totalComponents > 1){
                                 @totalComponents <text> subcomponents.</text>
                             }
-                            @if(numNotComplete > 0){
-                                <text> @numNotComplete in progress</text>
-                            }else if(totalComponents > 0){
-                                <text> All complete.</text>
-                            }
                         </a>   
+                        @if(numNotComplete > 0){
+                            <text> @numNotComplete in progress</text>
+                        }else if(totalComponents > 0){
+                            <img src="~/resources/thumbsUpIcon.svg" style="width: 32px; height: 32px" alt="all complete icon"/>
+                            <text> All complete.</text>
+                        }
 
                         <a class="badge rounded-right badge-info shadow-sm px-2 py-2 ml-2 my-2" href="@(ComponentCreationString)">
                             + Add Component
@@ -204,15 +205,20 @@
                         asp-route-ComponentID="@item.ID">
                         <img src="~/resources/issueIcon.svg" style="width: 32px; height: 32px" alt="issue icon" />
                         @if(totalIssues == 0){
-                            <text>No open issues.</text>
+                            <text>No issues.</text>
                         }
                         @if(totalIssues == 1){
-                            <text>1 open issue.</text>
-                        }
+                            <text>1 issue.</text>
+                        }   
                         @if(totalIssues > 1){
-                            @totalComponents <text> open issues.</text>
-                        }                        
+                            @totalIssues <text> issues.</text>
+                        }
+                    }
                     </a>
+                    @if(totalIssues == numClosed && totalIssues != 0){
+                        <img src="~/resources/thumbsUpIcon.svg" style="width: 32px; height: 32px" alt="thumbs up icon"/>
+                        <text> all addressed.</text>
+                    }
 
                     <a class="badge badge-pill badge-info px-2 py-2 ml-2 mt-2" 
                         asp-page="/ProjectTracker/Issue/Create"

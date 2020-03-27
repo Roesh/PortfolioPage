@@ -47,7 +47,7 @@ namespace PortfolioPage.Pages.ProjectTracker.Component
                             .Include(pc => pc.projectUpdates)
                             .ToList();
                             
-            currentProject = await Context.project.FirstOrDefaultAsync(m => m.ID == projectComponent.projectID);
+            currentProject = await GetProjectAsync(projectComponent.projectID, true, true, true);
             //AUTHORIZATION
             bool loginUserIsComponentOwner = (projectComponent.creatingUserID == getLoggedInUserId());
 
